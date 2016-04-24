@@ -33,7 +33,7 @@ namespace Warehouse
         {
             Quanity = quanity;
             Factor = factor;
-            if(!FactDictionary.ContainsKey(Factor)) throw new ArgumentException("Invalid factor");
+            if (!FactDictionary.ContainsKey(Factor)) throw new ArgumentException("Invalid factor");
 
             FactDictionary.Add("т.", 1000); //Тонна
             FactDictionary.Add("ц.", 100); //Центнер
@@ -59,41 +59,18 @@ namespace Warehouse
         }
     }
 
-
-    //TODO: Попробовать enum
-    /*    class Weight : INumInSI
+    sealed class UnitsOnly : ADTUnits
+    {
+        public UnitsOnly(double quanity)
         {
-            public double Quanity { get; set; }
-            public string Factor { get; set; }
-            public Dictionary<string, double> FactDictionary { get; set; }
-
-            public Weight(double quanity, string factor)
-            {
-                Quanity = quanity;
-                Factor = factor;
-
-                FactDictionary.Add("т.", 1000); //Тонна
-                FactDictionary.Add("ц.", 100); //Центнер
-                FactDictionary.Add("кг.", 1); //Килограмм
-                FactDictionary.Add("г.", 0.001); //Грамм
-                FactDictionary.Add("мг.", 0.000001); //Миллиграмм
-            }
-            public double GetSINumber()
-            {
-                return Quanity * FactDictionary[Factor];
-            }
-
-            public void SetToFactor(string newFact)
-            {
-                Quanity = GetSINumber() / FactDictionary[newFact];
-                Factor = newFact;
-            }
+            Quanity = quanity;
+            Factor = "шт.";
         }
+        public override double GetSINumber() => Quanity;
 
-        class Volume : INumInSI
+        public override void SetToFactor(string newFact)
         {
-            public double Quanity { get; set; };
-
+            throw new InvalidOperationException();
         }
-        */
+    }
 }
