@@ -15,73 +15,7 @@ TASK:
 */
 namespace Warehouse
 {
-    class Warehouse : IList<Item>
+    class Warehouse : List<Item>
     {
-        List<Item> innerCollection;
-        public bool IsReadOnly { get; }
-        public int Count { get; }
-
-        public Item this[int index]
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public Warehouse(bool ReadOnlyFlag = false)
-        {
-            IsReadOnly = ReadOnlyFlag;
-            innerCollection = new List<Item>();
-            Count = 0;
-        }
-
-        public void Add(Item item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(Item item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Clear()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(Item item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Insert(int index, Item item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveAt(int index)
-        {
-            
-        }
-
-        public void CopyTo(Item[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int IndexOf(Item item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerator<Item> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
     }
 }
