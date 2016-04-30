@@ -8,20 +8,25 @@ namespace Warehouse
 {
     class Item
     {
-        public double Quanity;
-        public ADTUnits Units;
-        private List<LastEntry> itemLog;
+        public string Name { get; set; }
+        public double Quanity { get; set; }
+        public ADTUnits Units { get; private set; }
+        private List<LastEntry> itemLog { get; }
 
-        public Item(double quanity, ADTUnits units)
+        public Item(string name, double quanity, ADTUnits units)
         {
+            itemLog = new List<LastEntry>();
+            Name = name;
             Quanity = quanity;
             Units = units;
             itemLog.Add(new LastEntry(0));
 
         }
 
-        public Item(double quanity, ADTUnits units, LastEntry le)
+        public Item(string name, double quanity, ADTUnits units, LastEntry le)
         {
+            itemLog = new List<LastEntry>();
+            Name = name;
             Quanity = quanity;
             Units = units;
             itemLog.Add(le);

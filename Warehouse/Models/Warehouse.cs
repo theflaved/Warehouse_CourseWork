@@ -17,5 +17,17 @@ namespace Warehouse
 {
     class Warehouse : List<Item>
     {
+        public int IdCounter { get; private set; }
+        public Warehouse SearchName(string name)
+        {
+            if (name == null) return this;
+            Warehouse result = new Warehouse();
+            name = name.ToLower();
+            foreach (Item colItem in this)
+            {
+                if(colItem.Name.ToLower() == name) result.Add(colItem);
+            }
+            return result;
+        }
     }
 }

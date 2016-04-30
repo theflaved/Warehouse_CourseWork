@@ -25,21 +25,28 @@ namespace Warehouse
             Quanity = GetSINumber() / FactDictionary[newFact];
             Factor = newFact;
         }
+
+        public override string ToString()
+        {
+            return (Quanity + " " + Factor);
+        }
     }
 
     sealed class Weight : ADTUnits
     {
         public Weight(double quanity, string factor)
         {
+            FactDictionary = new Dictionary<string, double>();
             Quanity = quanity;
             Factor = factor;
-            if (!FactDictionary.ContainsKey(Factor)) throw new ArgumentException("Invalid factor");
 
             FactDictionary.Add("т.", 1000); //Тонна
             FactDictionary.Add("ц.", 100); //Центнер
             FactDictionary.Add("кг.", 1); //Килограмм
             FactDictionary.Add("г.", 0.001); //Грамм
             FactDictionary.Add("мг.", 0.000001); //Миллиграмм
+
+            if (!FactDictionary.ContainsKey(Factor)) throw new ArgumentException("Invalid factor");
         }
     }
 
@@ -47,15 +54,17 @@ namespace Warehouse
     {
         public Volume(double quanity, string factor)
         {
+            FactDictionary = new Dictionary<string, double>();
             Quanity = quanity;
             Factor = factor;
-            if (!FactDictionary.ContainsKey(Factor)) throw new ArgumentException("Invalid factor");
 
             FactDictionary.Add("т.", 1000); //Тонна
             FactDictionary.Add("ц.", 100); //Центнер
             FactDictionary.Add("л.", 1); //Литр
             FactDictionary.Add("мл.", 0.001); //Грамм
             FactDictionary.Add("мг.", 0.000001); //Миллиграмм
+
+            if (!FactDictionary.ContainsKey(Factor)) throw new ArgumentException("Invalid factor");
         }
     }
 
@@ -63,6 +72,7 @@ namespace Warehouse
     {
         public UnitsOnly(double quanity)
         {
+            FactDictionary = new Dictionary<string, double>();
             Quanity = quanity;
             Factor = "шт.";
         }

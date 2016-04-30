@@ -15,6 +15,13 @@ namespace Warehouse
         public Form1()
         {
             InitializeComponent();
+            textBox1.TextChanged += new EventHandler(textBox1_TextChanged);
+            Warehouse n = new Warehouse();
+            n.Add(new Item("Some item", 2.242, new Weight(202, "кг.")));
+            n.Add(new Item("Some item1", 2.212, new Weight(230, "кг.")));
+            n.Add(new Item("Some item2", 2.222, new Weight(21, "кг.")));
+            n.Add(new Item("Some item3", 2.222, new Weight(70, "кг.")));
+            MainDataView.DataSource = n.SearchName("s");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -41,11 +48,6 @@ namespace Warehouse
 
         }
 
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
 
@@ -54,6 +56,11 @@ namespace Warehouse
         private void button7_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            MainDataView.DataSource = ((Warehouse)(MainDataView.DataSource)).SearchName(Text);
         }
     }
 }
