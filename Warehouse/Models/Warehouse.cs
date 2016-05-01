@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,17 +16,48 @@ TASK:
 */
 namespace Warehouse
 {
-    class Warehouse : List<Item>
+    [Serializable]
+    class Warehouse : BindingList<Item>, ICloneable
     {
         public int IdCounter { get; private set; }
+
+        public Warehouse() { }
         public Warehouse SearchName(string name)
         {
-            if (name == null) return this;
+            if (name == "") return this;
             Warehouse result = new Warehouse();
             name = name.ToLower();
             foreach (Item colItem in this)
             {
-                if(colItem.Name.ToLower() == name) result.Add(colItem);
+                if(colItem.Name.ToLower().Contains(name)) result.Add(colItem);
+            }
+            return result;
+        }
+        public object Clone()
+        {
+            Warehouse result = new Warehouse();
+            foreach (Item item in this)
+            {
+                result.Add(item);
+            }
+            return result;
+        }
+
+        /*public static Comparer<Item> GetNameComparer()
+        {
+
+            return 
+        }*/
+    }
+
+    static class BaseExtensionMethods
+    {
+        public static Warehouse ToWarehouse(this List<Item> toConvert)
+        {
+            Warehouse result = new Warehouse();
+            foreach (Item item in toConvert)
+            {
+                result.Add(item);
             }
             return result;
         }

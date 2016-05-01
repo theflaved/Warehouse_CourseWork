@@ -10,7 +10,7 @@ namespace Warehouse
         Dictionary<string, double> FactDictionary { get; set; }
         double GetSINumber();
     }
-
+    [Serializable]
     abstract class ADTUnits : INumInSI
     {
         public virtual double Quanity { get; set; }
@@ -31,7 +31,7 @@ namespace Warehouse
             return (Quanity + " " + Factor);
         }
     }
-
+    [Serializable]
     sealed class Weight : ADTUnits
     {
         public Weight(double quanity, string factor)
@@ -49,7 +49,7 @@ namespace Warehouse
             if (!FactDictionary.ContainsKey(Factor)) throw new ArgumentException("Invalid factor");
         }
     }
-
+    [Serializable]
     sealed class Volume : ADTUnits
     {
         public Volume(double quanity, string factor)
@@ -67,7 +67,7 @@ namespace Warehouse
             if (!FactDictionary.ContainsKey(Factor)) throw new ArgumentException("Invalid factor");
         }
     }
-
+    [Serializable]
     sealed class UnitsOnly : ADTUnits
     {
         public UnitsOnly(double quanity)

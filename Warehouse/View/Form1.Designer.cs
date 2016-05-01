@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.MainDataView = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
+            this.DeleteButton = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.WriteFileButton = new System.Windows.Forms.Button();
+            this.ReadFileButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.SearchBox = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
@@ -56,16 +56,17 @@
             this.MainDataView.Size = new System.Drawing.Size(724, 227);
             this.MainDataView.TabIndex = 0;
             this.MainDataView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.MainDataView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.MainDataView_ColumnHeaderMouseClick);
             // 
-            // button1
+            // DeleteButton
             // 
-            this.button1.Location = new System.Drawing.Point(93, 344);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Удалить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.DeleteButton.Location = new System.Drawing.Point(93, 344);
+            this.DeleteButton.Name = "DeleteButton";
+            this.DeleteButton.Size = new System.Drawing.Size(75, 23);
+            this.DeleteButton.TabIndex = 1;
+            this.DeleteButton.Text = "Удалить";
+            this.DeleteButton.UseVisualStyleBackColor = true;
+            this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
             // button2
             // 
@@ -77,23 +78,25 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button3
+            // WriteFileButton
             // 
-            this.button3.Location = new System.Drawing.Point(637, 344);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(99, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Сохранить БД";
-            this.button3.UseVisualStyleBackColor = true;
+            this.WriteFileButton.Location = new System.Drawing.Point(637, 344);
+            this.WriteFileButton.Name = "WriteFileButton";
+            this.WriteFileButton.Size = new System.Drawing.Size(99, 23);
+            this.WriteFileButton.TabIndex = 3;
+            this.WriteFileButton.Text = "Сохранить БД";
+            this.WriteFileButton.UseVisualStyleBackColor = true;
+            this.WriteFileButton.Click += new System.EventHandler(this.WriteFileButton_Click);
             // 
-            // button4
+            // ReadFileButton
             // 
-            this.button4.Location = new System.Drawing.Point(533, 344);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(98, 23);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Открыть БД";
-            this.button4.UseVisualStyleBackColor = true;
+            this.ReadFileButton.Location = new System.Drawing.Point(533, 344);
+            this.ReadFileButton.Name = "ReadFileButton";
+            this.ReadFileButton.Size = new System.Drawing.Size(98, 23);
+            this.ReadFileButton.TabIndex = 4;
+            this.ReadFileButton.Text = "Открыть БД";
+            this.ReadFileButton.UseVisualStyleBackColor = true;
+            this.ReadFileButton.Click += new System.EventHandler(this.ReadFileButton_Click);
             // 
             // label1
             // 
@@ -104,13 +107,13 @@
             this.label1.TabIndex = 6;
             this.label1.Text = "Warehouse Alpha";
             // 
-            // textBox1
+            // SearchBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 85);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(605, 20);
-            this.textBox1.TabIndex = 7;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.SearchBox.Location = new System.Drawing.Point(12, 85);
+            this.SearchBox.Name = "SearchBox";
+            this.SearchBox.Size = new System.Drawing.Size(605, 20);
+            this.SearchBox.TabIndex = 7;
+            this.SearchBox.TextChanged += new System.EventHandler(this.SearchBox_TextChanged);
             // 
             // button5
             // 
@@ -170,12 +173,12 @@
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.SearchBox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.ReadFileButton);
+            this.Controls.Add(this.WriteFileButton);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.DeleteButton);
             this.Controls.Add(this.MainDataView);
             this.Name = "Form1";
             this.Text = "Warehouse Alpha";
@@ -189,12 +192,12 @@
         #endregion
 
         private System.Windows.Forms.DataGridView MainDataView;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button WriteFileButton;
+        private System.Windows.Forms.Button ReadFileButton;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox SearchBox;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
