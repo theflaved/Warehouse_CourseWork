@@ -50,15 +50,15 @@ namespace Warehouse
         }
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            //TODO: Do more research (if isn't needed - delete)
         }
         private void button5_Click(object sender, EventArgs e)
         {
-
+            //TODO: Implement (or not?) special search method
         }
-        private void button6_Click(object sender, EventArgs e)
+        private void EditItemButton_Click(object sender, EventArgs e)
         {
-
+            //TODO: Implement warehouse item editing
         }
         private void DeleteButton_Click(object sender, EventArgs e)
         {
@@ -79,13 +79,13 @@ namespace Warehouse
                     MessageBoxDefaultButton.Button1);
             }
         }
-        private void button2_Click(object sender, EventArgs e)
+        private void AddItemButton_Click(object sender, EventArgs e)
         {
-
+            //TODO: Implement item adding
         }
-        private void button7_Click(object sender, EventArgs e)
+        private void PrintDBToDocButton_Click(object sender, EventArgs e)
         {
-
+            //TODO: Implement DB parsing to Doc(x?) file (Microsoft.Office.Interop.Word)
         }
         private void SearchBox_TextChanged(object sender, EventArgs e)
         {
@@ -111,7 +111,6 @@ namespace Warehouse
             }
             RefreshDataView(MainDataView, data);
         }
-
         private void WriteFileButton_Click(object sender, EventArgs e)
         {
             IFormatter formatter = new BinaryFormatter();
@@ -125,6 +124,14 @@ namespace Warehouse
                 formatter.Serialize(stream, data);
                 stream.Close();
             }
+        }
+        private void DeliverToWarehouseButton_Click(object sender, EventArgs e)
+        {
+            //TODO: Implement multiple item editing/adding form
+        }
+        private void DeliverFromWarehouseButton_Click(object sender, EventArgs e)
+        {
+            //TODO: Implement multiple item deletion/editing form
         }
     }
 }

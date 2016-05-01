@@ -30,16 +30,16 @@
         {
             this.MainDataView = new System.Windows.Forms.DataGridView();
             this.DeleteButton = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.AddItemButton = new System.Windows.Forms.Button();
             this.WriteFileButton = new System.Windows.Forms.Button();
             this.ReadFileButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.SearchBox = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
+            this.EditItemButton = new System.Windows.Forms.Button();
+            this.PrintDBToDocButton = new System.Windows.Forms.Button();
+            this.DeliverToWarehouseButton = new System.Windows.Forms.Button();
+            this.DeliverFromWarehouseButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainDataView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,15 +68,15 @@
             this.DeleteButton.UseVisualStyleBackColor = true;
             this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
-            // button2
+            // AddItemButton
             // 
-            this.button2.Location = new System.Drawing.Point(12, 344);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Добавить";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.AddItemButton.Location = new System.Drawing.Point(12, 344);
+            this.AddItemButton.Name = "AddItemButton";
+            this.AddItemButton.Size = new System.Drawing.Size(75, 23);
+            this.AddItemButton.TabIndex = 2;
+            this.AddItemButton.Text = "Добавить";
+            this.AddItemButton.UseVisualStyleBackColor = true;
+            this.AddItemButton.Click += new System.EventHandler(this.AddItemButton_Click);
             // 
             // WriteFileButton
             // 
@@ -125,59 +125,61 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // button6
+            // EditItemButton
             // 
-            this.button6.Location = new System.Drawing.Point(174, 344);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(158, 23);
-            this.button6.TabIndex = 9;
-            this.button6.Text = "Редактировать запись";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.EditItemButton.Location = new System.Drawing.Point(174, 344);
+            this.EditItemButton.Name = "EditItemButton";
+            this.EditItemButton.Size = new System.Drawing.Size(158, 23);
+            this.EditItemButton.TabIndex = 9;
+            this.EditItemButton.Text = "Редактировать запись";
+            this.EditItemButton.UseVisualStyleBackColor = true;
+            this.EditItemButton.Click += new System.EventHandler(this.EditItemButton_Click);
             // 
-            // button7
+            // PrintDBToDocButton
             // 
-            this.button7.Location = new System.Drawing.Point(398, 26);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(166, 23);
-            this.button7.TabIndex = 10;
-            this.button7.Text = "Сформировать ведомость";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.PrintDBToDocButton.Location = new System.Drawing.Point(398, 26);
+            this.PrintDBToDocButton.Name = "PrintDBToDocButton";
+            this.PrintDBToDocButton.Size = new System.Drawing.Size(166, 23);
+            this.PrintDBToDocButton.TabIndex = 10;
+            this.PrintDBToDocButton.Text = "Сформировать ведомость";
+            this.PrintDBToDocButton.UseVisualStyleBackColor = true;
+            this.PrintDBToDocButton.Click += new System.EventHandler(this.PrintDBToDocButton_Click);
             // 
-            // button8
+            // DeliverToWarehouseButton
             // 
-            this.button8.Location = new System.Drawing.Point(570, 12);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(166, 23);
-            this.button8.TabIndex = 11;
-            this.button8.Text = "Поступление товара";
-            this.button8.UseVisualStyleBackColor = true;
+            this.DeliverToWarehouseButton.Location = new System.Drawing.Point(570, 12);
+            this.DeliverToWarehouseButton.Name = "DeliverToWarehouseButton";
+            this.DeliverToWarehouseButton.Size = new System.Drawing.Size(166, 23);
+            this.DeliverToWarehouseButton.TabIndex = 11;
+            this.DeliverToWarehouseButton.Text = "Поступление товара";
+            this.DeliverToWarehouseButton.UseVisualStyleBackColor = true;
+            this.DeliverToWarehouseButton.Click += new System.EventHandler(this.DeliverToWarehouseButton_Click);
             // 
-            // button9
+            // DeliverFromWarehouseButton
             // 
-            this.button9.Location = new System.Drawing.Point(570, 41);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(166, 23);
-            this.button9.TabIndex = 12;
-            this.button9.Text = "Отгрузка";
-            this.button9.UseVisualStyleBackColor = true;
+            this.DeliverFromWarehouseButton.Location = new System.Drawing.Point(570, 41);
+            this.DeliverFromWarehouseButton.Name = "DeliverFromWarehouseButton";
+            this.DeliverFromWarehouseButton.Size = new System.Drawing.Size(166, 23);
+            this.DeliverFromWarehouseButton.TabIndex = 12;
+            this.DeliverFromWarehouseButton.Text = "Отгрузка";
+            this.DeliverFromWarehouseButton.UseVisualStyleBackColor = true;
+            this.DeliverFromWarehouseButton.Click += new System.EventHandler(this.DeliverFromWarehouseButton_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(748, 379);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
+            this.Controls.Add(this.DeliverFromWarehouseButton);
+            this.Controls.Add(this.DeliverToWarehouseButton);
+            this.Controls.Add(this.PrintDBToDocButton);
+            this.Controls.Add(this.EditItemButton);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.SearchBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ReadFileButton);
             this.Controls.Add(this.WriteFileButton);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.AddItemButton);
             this.Controls.Add(this.DeleteButton);
             this.Controls.Add(this.MainDataView);
             this.Name = "Form1";
@@ -193,16 +195,16 @@
 
         private System.Windows.Forms.DataGridView MainDataView;
         private System.Windows.Forms.Button DeleteButton;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button AddItemButton;
         private System.Windows.Forms.Button WriteFileButton;
         private System.Windows.Forms.Button ReadFileButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox SearchBox;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button EditItemButton;
+        private System.Windows.Forms.Button PrintDBToDocButton;
+        private System.Windows.Forms.Button DeliverToWarehouseButton;
+        private System.Windows.Forms.Button DeliverFromWarehouseButton;
     }
 }
 

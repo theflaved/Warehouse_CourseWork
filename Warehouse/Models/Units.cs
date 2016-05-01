@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Warehouse
 {
+    //TODO: Clean and structurize code
     public interface INumInSI
     {
         double Quanity { get; set; }

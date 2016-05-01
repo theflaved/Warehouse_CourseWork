@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Warehouse
 {
     [Serializable]
+    //TODO: Implement IComparable fully
     class Item : IComparable<Item>
     {
         public string Name { get; set; }

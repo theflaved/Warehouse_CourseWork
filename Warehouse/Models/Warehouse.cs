@@ -17,6 +17,7 @@ TASK:
 namespace Warehouse
 {
     [Serializable]
+    //TODO: Implement BindingList to extend view functionality (Column sorting, etc.)
     class Warehouse : BindingList<Item>, ICloneable
     {
         public int IdCounter { get; private set; }
@@ -49,7 +50,7 @@ namespace Warehouse
             return 
         }*/
     }
-
+    //TODO: Fix this bad code
     static class BaseExtensionMethods
     {
         public static Warehouse ToWarehouse(this List<Item> toConvert)
