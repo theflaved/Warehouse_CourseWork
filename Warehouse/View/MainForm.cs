@@ -8,7 +8,9 @@ namespace Warehouse
 {
     public partial class Form1 : Form
     {
-        private object MainView
+        private WarehouseEditForm EditForm;
+        public DataGridView OuterAccessToDBView => MainDataView;
+        public object MainDataViewSource
         {
             get
             {
@@ -20,32 +22,26 @@ namespace Warehouse
                 MainDataView.DataSource = value;
             }
         }
-        private Warehouse data;
+        private Warehouse _data;
         public Form1()
         {
             InitializeComponent();
             Warehouse n = new Warehouse();
-            data = n;
+            _data = n;
             n.Add(new Item("Жарений кабанчик", 25, new Weight(20, 90, "кг.")));
             n.Add(new Item("Огурцы", 90, new Volume(20.53, 10, "л.")));
             n.Add(new Item("Помидоры", 33, new Volume(40, 33, "л.")));
-            MainView = data;
+            MainDataViewSource = _data;
             MainPicDrawer.Image = Properties.Resources.buildings64;
-            MainDataView.Columns["CompletePriceSum"].DefaultCellStyle.Format = ("#,###.00 грн.");
-            MainDataView.Columns["Quanity"].DefaultCellStyle.Format = ("#,## шт.;(#,## шт.)");
-            MainDataView.Columns["LastQuanityChange"].DefaultCellStyle.Format = ("#,## шт.;(#,## шт.)");
+            SetDataFormats(MainDataView);
         }
-        private void RefreshDataView(DataGridView view, object data)
-        {
-            MainView = null;
-            MainView = data;
-        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
         }
         private void EditItemButton_Click(object sender, EventArgs e)
         {
-            //TODO: Implement warehouse item editing
+            
         }
         private void DeleteButton_Click(object sender, EventArgs e)
         {
@@ -56,8 +52,8 @@ namespace Warehouse
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                     MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                 {
-                    data.Remove((Item)toDelete);
-                    RefreshDataView(MainDataView,data);
+                    _data.Remove((Item)toDelete);
+                    RefreshDataView(MainDataView,_data);
                 }
             }
             catch (NullReferenceException)
@@ -72,40 +68,66 @@ namespace Warehouse
         }
         private void SearchBox_TextChanged(object sender, EventArgs e)
         {
-            MainView = data.SearchName(SearchBox.Text);
+            MainDataViewSource = _data.SearchName(SearchBox.Text);
         }
         private void ReadFileButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFile = new OpenFileDialog();
-            openFile.FileName = "DB.bin";
-            openFile.Filter = "Binary DB (*.bin)|*.bin|All files (*.*)|*.*";
             IFormatter formatter = new BinaryFormatter();
-
+            OpenFileDialog openFile = new OpenFileDialog
+            {
+                FileName = "DB.bin",
+                Filter = "Binary DB (*.bin)|*.bin|All files (*.*)|*.*"
+            };
             if (openFile.ShowDialog() == DialogResult.OK)
             {
                 Stream stream = new FileStream(openFile.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-                data = (Warehouse)formatter.Deserialize(stream);
+                _data = (Warehouse)formatter.Deserialize(stream);
                 stream.Close();
             }
-            RefreshDataView(MainDataView, data);
+            RefreshDataView(MainDataView, _data);
         }
         private void WriteFileButton_Click(object sender, EventArgs e)
         {
             IFormatter formatter = new BinaryFormatter();
-            SaveFileDialog saveFile = new SaveFileDialog();
-            saveFile.FileName = "United.bin";
-            saveFile.Filter = "Binary DB (*.bin)|*.bin|All files (*.*)|*.*";
-
+            SaveFileDialog saveFile = new SaveFileDialog
+            {
+                FileName = "United.bin",
+                Filter = "Binary DB (*.bin)|*.bin|All files (*.*)|*.*"
+            };
             if (saveFile.ShowDialog() == DialogResult.OK)
             {
                 Stream stream = new FileStream(saveFile.FileName, FileMode.Create, FileAccess.Write, FileShare.None);
-                formatter.Serialize(stream, data);
+                formatter.Serialize(stream, _data);
                 stream.Close();
             }
         }
         private void DeliverToWarehouseButton_Click(object sender, EventArgs e)
         {
-            //TODO: Income form implementation (!!!!!!!)
+            EditForm = new WarehouseEditForm();
+            EditForm.Show();
+        }
+        public void RefreshDataView(DataGridView view, object data)
+        {
+            CurrencyManager cm = (CurrencyManager)view.BindingContext[data];
+            if (cm != null)
+            {
+                cm.Refresh();
+            }
+            SetDataFormats(view);
+        }
+        //TODO: Fix this govnocode
+        public void SetDataFormats(DataGridView DGV)
+        {
+            try
+            {
+                DGV.Columns["CompletePriceSum"].DefaultCellStyle.Format = ("#,###.00 грн.");
+                DGV.Columns["Quanity"].DefaultCellStyle.Format = ("#,## шт.;(#,## шт.)");
+                DGV.Columns["LastQuanityChange"].DefaultCellStyle.Format = ("#,## шт.;(#,## шт.)");
+            }
+            catch (NullReferenceException)
+            {
+                throw new ArgumentException("Bad DGV");
+            }
         }
     }
 }

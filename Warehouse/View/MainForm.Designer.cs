@@ -55,12 +55,12 @@
             this.MainDataView.MultiSelect = false;
             this.MainDataView.Name = "MainDataView";
             this.MainDataView.ReadOnly = true;
-            this.MainDataView.Size = new System.Drawing.Size(724, 227);
+            this.MainDataView.Size = new System.Drawing.Size(853, 227);
             this.MainDataView.TabIndex = 0;
             // 
             // DeleteButton
             // 
-            this.DeleteButton.Location = new System.Drawing.Point(578, 364);
+            this.DeleteButton.Location = new System.Drawing.Point(707, 364);
             this.DeleteButton.Name = "DeleteButton";
             this.DeleteButton.Size = new System.Drawing.Size(158, 23);
             this.DeleteButton.TabIndex = 1;
@@ -70,7 +70,7 @@
             // 
             // WriteFileButton
             // 
-            this.WriteFileButton.Location = new System.Drawing.Point(533, 12);
+            this.WriteFileButton.Location = new System.Drawing.Point(662, 6);
             this.WriteFileButton.Name = "WriteFileButton";
             this.WriteFileButton.Size = new System.Drawing.Size(99, 23);
             this.WriteFileButton.TabIndex = 3;
@@ -80,7 +80,7 @@
             // 
             // ReadFileButton
             // 
-            this.ReadFileButton.Location = new System.Drawing.Point(638, 12);
+            this.ReadFileButton.Location = new System.Drawing.Point(767, 6);
             this.ReadFileButton.Name = "ReadFileButton";
             this.ReadFileButton.Size = new System.Drawing.Size(98, 23);
             this.ReadFileButton.TabIndex = 4;
@@ -92,13 +92,13 @@
             // 
             this.SearchBox.Location = new System.Drawing.Point(12, 76);
             this.SearchBox.Name = "SearchBox";
-            this.SearchBox.Size = new System.Drawing.Size(724, 20);
+            this.SearchBox.Size = new System.Drawing.Size(853, 20);
             this.SearchBox.TabIndex = 7;
             this.SearchBox.TextChanged += new System.EventHandler(this.SearchBox_TextChanged);
             // 
             // EditItemButton
             // 
-            this.EditItemButton.Location = new System.Drawing.Point(578, 335);
+            this.EditItemButton.Location = new System.Drawing.Point(707, 335);
             this.EditItemButton.Name = "EditItemButton";
             this.EditItemButton.Size = new System.Drawing.Size(158, 23);
             this.EditItemButton.TabIndex = 9;
@@ -166,7 +166,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(748, 397);
+            this.ClientSize = new System.Drawing.Size(877, 397);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.VersionLabel);
             this.Controls.Add(this.NameLabel);

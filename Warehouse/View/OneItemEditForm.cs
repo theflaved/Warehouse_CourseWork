@@ -10,21 +10,11 @@ using System.Windows.Forms;
 
 namespace Warehouse
 {
-    public partial class AddForm : Form
+    public partial class OneItemEditForm : Form
     {
-        public AddForm()
+        public OneItemEditForm()
         {
             InitializeComponent();
-        }
-
-        private void Form2_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
