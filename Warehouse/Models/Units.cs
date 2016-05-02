@@ -14,9 +14,19 @@ namespace Warehouse
     [Serializable]
     abstract class ADTUnits : INumInSI, IComparable<ADTUnits>
     {
-        public virtual double Quanity { get; set; }
-        public virtual string Factor { get; set; }
-        public virtual Dictionary<string, double> FactDictionary { get; set; }
+        public double Quanity { get; set; }
+        public string Factor
+        {
+            get { return _factor; }
+            set
+            {
+                if(FactDictionary.ContainsKey(value)) throw new ArgumentException("Invalid factor");
+                _factor = value;
+            }
+        }
+        private string _factor;
+        public Dictionary<string, double> FactDictionary { get; set; }
+        public double Price { get; set; }
         public virtual double GetSINumber()
         {
             return Quanity * FactDictionary[Factor];
@@ -28,21 +38,22 @@ namespace Warehouse
         }
         public override string ToString()
         {
-            return (Quanity + " " + Factor);
+            return (Price + " грн./" + Quanity + " " + Factor);
         }
-        public int CompareTo(ADTUnits other)
+        public virtual int CompareTo(ADTUnits other)
         {
-            return GetSINumber().CompareTo(other.GetSINumber());
+            return Price.CompareTo(other.Price);
         }
     }
     [Serializable]
     sealed class Weight : ADTUnits
     {
-        public Weight(double quanity, string factor)
+        public Weight(double price, double quanity, string factor)
         {
             FactDictionary = new Dictionary<string, double>();
             Quanity = quanity;
             Factor = factor;
+            Price = price;
 
             FactDictionary.Add("т.", 1000); //Тонна
             FactDictionary.Add("ц.", 100); //Центнер
@@ -56,11 +67,12 @@ namespace Warehouse
     [Serializable]
     sealed class Volume : ADTUnits
     {
-        public Volume(double quanity, string factor)
+        public Volume(double price, double quanity, string factor)
         {
             FactDictionary = new Dictionary<string, double>();
             Quanity = quanity;
             Factor = factor;
+            Price = price;
 
             FactDictionary.Add("т.", 1000); //Тонна
             FactDictionary.Add("ц.", 100); //Центнер
@@ -74,11 +86,12 @@ namespace Warehouse
     [Serializable]
     sealed class UnitsOnly : ADTUnits
     {
-        public UnitsOnly(double quanity)
+        public UnitsOnly(double price, double quanity)
         {
             FactDictionary = new Dictionary<string, double>();
             Quanity = quanity;
             Factor = "шт.";
+            Price = price;
         }
         public override double GetSINumber() => Quanity;
 

@@ -1,37 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Warehouse
 {
     [Serializable]
-    //TODO: Implement IComparable fully
     class Item : IComparable<Item>
     {
+        [DisplayName("Наименование")]
         public string Name { get; set; }
+        [DisplayName("Колличество")]
         public double Quanity { get; set; }
-        public ADTUnits Units { get; private set; }
-        private List<LastEntry> itemLog { get; }
+        [DisplayName("Стоимость за единицу")]
+        public ADTUnits Units { get; set; }
+        [DisplayName("Общая цена")]
+        public double CompletePriceSum => Quanity * Units.Price;
+        [DisplayName("Дата последнего изменения")]
+        public DateTime LastEntry => ItemLog.Last().LastDate;
+        [DisplayName("Последнее изменение в количестве")]
+        public double LastQuanityChange => ItemLog.Last().QuanityChange;
+        private List<LastEntry> ItemLog { get; }
         public Item(string name, double quanity, ADTUnits units) : this(name,quanity,units,new LastEntry(quanity)) { }
         public Item(string name, double quanity, ADTUnits units, LastEntry le)
         {
-            itemLog = new List<LastEntry>();
+            ItemLog = new List<LastEntry>();
             Name = name;
             Quanity = quanity;
             Units = units;
-            itemLog.Add(le);
+            ItemLog.Add(le);
         }
-        public int CompareTo(Item other)
-        {
-            return Quanity.CompareTo(other.Quanity);
-        }
+        public int CompareTo(Item other) => Quanity.CompareTo(other.Quanity);
     }
     [Serializable]
     class LastEntry
     {
-        public DateTime lastDate;
+        public DateTime LastDate;
         public double QuanityChange;
 
         public LastEntry(double qChange) : this(qChange, DateTime.Now) { }
@@ -39,7 +43,7 @@ namespace Warehouse
         public LastEntry(double qChange, DateTime time)
         {
             QuanityChange = qChange;
-            lastDate = time;
+            LastDate = time;
         }
     }
 }

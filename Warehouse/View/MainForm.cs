@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Warehouse
@@ -34,7 +26,14 @@ namespace Warehouse
             InitializeComponent();
             Warehouse n = new Warehouse();
             data = n;
+            n.Add(new Item("Жарений кабанчик", 25, new Weight(20, 90, "кг.")));
+            n.Add(new Item("Огурцы", 90, new Volume(20.53, 10, "л.")));
+            n.Add(new Item("Помидоры", 33, new Volume(40, 33, "л.")));
             MainView = data;
+            MainPicDrawer.Image = Properties.Resources.buildings64;
+            MainDataView.Columns["CompletePriceSum"].DefaultCellStyle.Format = ("#,###.00 грн.");
+            MainDataView.Columns["Quanity"].DefaultCellStyle.Format = ("#,## шт.;(#,## шт.)");
+            MainDataView.Columns["LastQuanityChange"].DefaultCellStyle.Format = ("#,## шт.;(#,## шт.)");
         }
         private void RefreshDataView(DataGridView view, object data)
         {
@@ -43,10 +42,6 @@ namespace Warehouse
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-        }
-        private void button5_Click(object sender, EventArgs e)
-        {
-            //TODO: Implement (or not?) special search method
         }
         private void EditItemButton_Click(object sender, EventArgs e)
         {
@@ -70,16 +65,6 @@ namespace Warehouse
                 MessageBox.Show("База данных не загружена!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
                     MessageBoxDefaultButton.Button1);
             }
-        }
-        private void AddItemButton_Click(object sender, EventArgs e)
-        {
-            AddForm form = new AddForm();
-            form.ShowDialog();
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                //data.Add(new Item());
-            }
-            //TODO: Implement item adding
         }
         private void PrintDBToDocButton_Click(object sender, EventArgs e)
         {
@@ -120,11 +105,7 @@ namespace Warehouse
         }
         private void DeliverToWarehouseButton_Click(object sender, EventArgs e)
         {
-            //TODO: Implement multiple item editing/adding form
-        }
-        private void DeliverFromWarehouseButton_Click(object sender, EventArgs e)
-        {
-            //TODO: Implement multiple item deletion/editing form
+            //TODO: Income form implementation (!!!!!!!)
         }
     }
 }

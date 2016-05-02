@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 /*
 TASK:
@@ -18,11 +14,11 @@ TASK:
 namespace Warehouse
 {
     [Serializable]
-    //TODO: Implement BindingList to extend view functionality (Column sorting, etc.)
     class Warehouse : BindingList<Item>, ICloneable
     {
         private List<Item> innerList;
         private ListSortDirection sortDirection;
+        [NonSerialized]
         private PropertyDescriptor sortProperty;
         Action<Warehouse, List<Item>>
                populateBaseList = (a, b) => a.ResetItems(b);
