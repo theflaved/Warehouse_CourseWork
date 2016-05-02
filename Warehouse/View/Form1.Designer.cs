@@ -55,8 +55,6 @@
             this.MainDataView.ReadOnly = true;
             this.MainDataView.Size = new System.Drawing.Size(724, 227);
             this.MainDataView.TabIndex = 0;
-            this.MainDataView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            this.MainDataView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.MainDataView_ColumnHeaderMouseClick);
             // 
             // DeleteButton
             // 

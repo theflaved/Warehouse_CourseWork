@@ -33,10 +33,6 @@ namespace Warehouse
         {
             InitializeComponent();
             Warehouse n = new Warehouse();
-            n.Add(new Item("Some item1", 2.242, new Weight(202, "кг.")));
-            n.Add(new Item("Some item4", 2.212, new Weight(230, "кг.")));
-            n.Add(new Item("Some item2", 2.222, new Weight(21, "кг.")));
-            n.Add(new Item("Some item3", 2.222, new Weight(70, "кг.")));
             data = n;
             MainView = data;
         }
@@ -47,10 +43,6 @@ namespace Warehouse
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-        }
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            //TODO: Do more research (if isn't needed - delete)
         }
         private void button5_Click(object sender, EventArgs e)
         {
@@ -81,6 +73,12 @@ namespace Warehouse
         }
         private void AddItemButton_Click(object sender, EventArgs e)
         {
+            AddForm form = new AddForm();
+            form.ShowDialog();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                //data.Add(new Item());
+            }
             //TODO: Implement item adding
         }
         private void PrintDBToDocButton_Click(object sender, EventArgs e)
@@ -90,11 +88,6 @@ namespace Warehouse
         private void SearchBox_TextChanged(object sender, EventArgs e)
         {
             MainView = data.SearchName(SearchBox.Text);
-        }
-        private void MainDataView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            data = data.OrderBy(x => x.Name).ToList().ToWarehouse();
-            RefreshDataView(MainDataView, data);
         }
         private void ReadFileButton_Click(object sender, EventArgs e)
         {

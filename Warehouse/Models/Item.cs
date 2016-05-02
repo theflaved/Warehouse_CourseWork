@@ -14,9 +14,7 @@ namespace Warehouse
         public double Quanity { get; set; }
         public ADTUnits Units { get; private set; }
         private List<LastEntry> itemLog { get; }
-
         public Item(string name, double quanity, ADTUnits units) : this(name,quanity,units,new LastEntry(quanity)) { }
-
         public Item(string name, double quanity, ADTUnits units, LastEntry le)
         {
             itemLog = new List<LastEntry>();
@@ -25,10 +23,9 @@ namespace Warehouse
             Units = units;
             itemLog.Add(le);
         }
-
         public int CompareTo(Item other)
         {
-            return Name.CompareTo(other.Name);
+            return Quanity.CompareTo(other.Quanity);
         }
     }
     [Serializable]
@@ -45,9 +42,4 @@ namespace Warehouse
             lastDate = time;
         }
     }
-
-//    public class NameComparer : IComparer<Item>
-//    {
-        
-//    }
 }

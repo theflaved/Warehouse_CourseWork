@@ -12,7 +12,7 @@ namespace Warehouse
         double GetSINumber();
     }
     [Serializable]
-    abstract class ADTUnits : INumInSI
+    abstract class ADTUnits : INumInSI, IComparable<ADTUnits>
     {
         public virtual double Quanity { get; set; }
         public virtual string Factor { get; set; }
@@ -26,10 +26,13 @@ namespace Warehouse
             Quanity = GetSINumber() / FactDictionary[newFact];
             Factor = newFact;
         }
-
         public override string ToString()
         {
             return (Quanity + " " + Factor);
+        }
+        public int CompareTo(ADTUnits other)
+        {
+            return GetSINumber().CompareTo(other.GetSINumber());
         }
     }
     [Serializable]
