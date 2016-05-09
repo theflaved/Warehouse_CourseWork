@@ -126,6 +126,9 @@
             // UnitTypeComboBox
             // 
             this.UnitTypeComboBox.FormattingEnabled = true;
+            this.UnitTypeComboBox.Items.AddRange(new object[] {
+            "Вес",
+            "Объем"});
             this.UnitTypeComboBox.Location = new System.Drawing.Point(12, 103);
             this.UnitTypeComboBox.Name = "UnitTypeComboBox";
             this.UnitTypeComboBox.Size = new System.Drawing.Size(164, 21);
@@ -168,6 +171,7 @@
             this.EditAcceptButton.TabIndex = 16;
             this.EditAcceptButton.Text = "Принять";
             this.EditAcceptButton.UseVisualStyleBackColor = true;
+            this.EditAcceptButton.Click += new System.EventHandler(this.EditAcceptButton_Click);
             // 
             // EditCancelButton
             // 
@@ -177,6 +181,7 @@
             this.EditCancelButton.TabIndex = 17;
             this.EditCancelButton.Text = "Отменить";
             this.EditCancelButton.UseVisualStyleBackColor = true;
+            this.EditCancelButton.Click += new System.EventHandler(this.EditCancelButton_Click);
             // 
             // OneItemEditForm
             // 

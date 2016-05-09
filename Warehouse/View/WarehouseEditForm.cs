@@ -20,24 +20,19 @@ namespace Warehouse
             InitializeComponent();
             newEdit = new Warehouse();
             MainEditDataView.DataSource = newEdit;
+            foreach (DataGridViewColumn column in MainEditDataView.Columns) column.ReadOnly = true;
+            CreateUnboundTextBoxColumn();
             n1 = new Form1();
             OldMainDataView.DataSource = n1.OuterAccessToDBView.DataSource;
             n1.SetDataFormats(OldMainDataView);
-            CreateUnboundTextBoxColumn();
         }
-
         private void WarehouseEditForm_Load(object sender, EventArgs e)
         {
         }
-        //TODO: Fix columns (google)
         private void CreateUnboundTextBoxColumn()
         {
-            foreach (DataGridViewColumn column in MainEditDataView.Columns)
-            {
-                column.ReadOnly = false;
-            }
             DataGridViewTextBoxColumn bc = new DataGridViewTextBoxColumn();
-            bc.Name = "";
+            bc.Name = "QChange";
             bc.HeaderText = "Изменения в количестве";
             bc.ReadOnly = false;
             MainEditDataView.Columns.Insert(MainEditDataView.ColumnCount, bc);
@@ -49,7 +44,7 @@ namespace Warehouse
                     MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1) ==
                 DialogResult.Yes)
             {
-                this.Close();
+                Close();
             }
         }
 
@@ -64,8 +59,40 @@ namespace Warehouse
             else
             {
                 newEdit.Add((Item)OldMainDataView.Rows[rowIndex].DataBoundItem);
+                List<int> temp= new List<int>();
+                for (int i = 0; i < MainEditDataView.RowCount; i++) temp.Add(
+                    Convert.ToInt32(MainEditDataView["QChange", i].Value));
                 n1.RefreshDataView(MainEditDataView, newEdit);
+                for (int i = 0; i < temp.Count; i++)
+                    MainEditDataView["QChange", i].Value = temp[i];
             }
+        }
+
+        private void DeleteFromEditButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                object toDelete = MainEditDataView.CurrentRow.DataBoundItem; //Can cause exception
+                if (MessageBox.Show("Вы уверены что хотите удалить выделеную запись?", "Подтверждение",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+                    MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                {
+                    newEdit.Remove((Item)toDelete);
+                    n1.RefreshDataView(MainEditDataView, newEdit);
+                }
+            }
+            catch (NullReferenceException)
+            {
+                //TODO: Edit this ;D
+                MessageBox.Show("Ничто не выбрано, все тлен", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+            }
+        }
+
+        private void AddToEditButton_Click(object sender, EventArgs e)
+        {
+            OneItemEditForm editForm = new OneItemEditForm();
+            editForm.Show();
         }
     }
 }

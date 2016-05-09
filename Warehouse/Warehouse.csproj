@@ -128,6 +128,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Warehouse.datasource" />
     <None Include="Warehouse_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

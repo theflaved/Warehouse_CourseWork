@@ -28,9 +28,15 @@ namespace Warehouse
             InitializeComponent();
             Warehouse n = new Warehouse();
             _data = n;
-            n.Add(new Item("Жарений кабанчик", 25, new Weight(20, 90, "кг.")));
-            n.Add(new Item("Огурцы", 90, new Volume(20.53, 10, "л.")));
-            n.Add(new Item("Помидоры", 33, new Volume(40, 33, "л.")));
+            n.Add(new Item("Жарений кабанчик", 25, new Weight(20, 1, "кг.")));
+            n.Add(new Item("Огурцы", 90, new Volume(20.53, 1, "л.")));
+            n.Add(new Item("Помидоры", 33, new Volume(40, 1, "л.")));
+            n.Add(new Item("Жарений кабанчик 3", 25, new Weight(20, 1, "кг.")));
+            n.Add(new Item("Огурцы 3", 90, new Volume(20.53, 1, "л.")));
+            n.Add(new Item("Помидоры 3", 33, new Volume(40, 1, "л.")));
+            n.Add(new Item("Жарений кабанчик 2", 25, new Weight(20, 1, "кг.")));
+            n.Add(new Item("Огурцы 2", 90, new Volume(20.53, 1, "л.")));
+            n.Add(new Item("Помидоры 2", 33, new Volume(40, 1, "л.")));
             MainDataViewSource = _data;
             MainPicDrawer.Image = Properties.Resources.buildings64;
             SetDataFormats(MainDataView);

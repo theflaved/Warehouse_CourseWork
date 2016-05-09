@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.MainEditDataView = new System.Windows.Forms.DataGridView();
+            this.warehouseBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.OldMainDataView = new System.Windows.Forms.DataGridView();
             this.OldSearchBox = new System.Windows.Forms.TextBox();
             this.NewSearchBox = new System.Windows.Forms.TextBox();
@@ -41,6 +43,7 @@
             this.CancelFormButton = new System.Windows.Forms.Button();
             this.CreateDocFile = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MainEditDataView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.warehouseBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OldMainDataView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,7 +53,7 @@
             this.MainEditDataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.MainEditDataView.Location = new System.Drawing.Point(12, 48);
             this.MainEditDataView.Name = "MainEditDataView";
-            this.MainEditDataView.Size = new System.Drawing.Size(717, 183);
+            this.MainEditDataView.Size = new System.Drawing.Size(855, 183);
             this.MainEditDataView.TabIndex = 0;
             // 
             // OldMainDataView
@@ -60,7 +63,7 @@
             this.OldMainDataView.Location = new System.Drawing.Point(12, 313);
             this.OldMainDataView.Name = "OldMainDataView";
             this.OldMainDataView.ReadOnly = true;
-            this.OldMainDataView.Size = new System.Drawing.Size(717, 183);
+            this.OldMainDataView.Size = new System.Drawing.Size(855, 183);
             this.OldMainDataView.TabIndex = 1;
             this.OldMainDataView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.OldMainDataView_CellMouseDoubleClick);
             // 
@@ -68,14 +71,14 @@
             // 
             this.OldSearchBox.Location = new System.Drawing.Point(12, 287);
             this.OldSearchBox.Name = "OldSearchBox";
-            this.OldSearchBox.Size = new System.Drawing.Size(717, 20);
+            this.OldSearchBox.Size = new System.Drawing.Size(855, 20);
             this.OldSearchBox.TabIndex = 2;
             // 
             // NewSearchBox
             // 
             this.NewSearchBox.Location = new System.Drawing.Point(12, 22);
             this.NewSearchBox.Name = "NewSearchBox";
-            this.NewSearchBox.Size = new System.Drawing.Size(717, 20);
+            this.NewSearchBox.Size = new System.Drawing.Size(855, 20);
             this.NewSearchBox.TabIndex = 3;
             // 
             // AddToEditButton
@@ -86,20 +89,22 @@
             this.AddToEditButton.TabIndex = 4;
             this.AddToEditButton.Text = "Добавить новый товар";
             this.AddToEditButton.UseVisualStyleBackColor = true;
+            this.AddToEditButton.Click += new System.EventHandler(this.AddToEditButton_Click);
             // 
             // DeleteFromEditButton
             // 
-            this.DeleteFromEditButton.Location = new System.Drawing.Point(518, 237);
+            this.DeleteFromEditButton.Location = new System.Drawing.Point(654, 237);
             this.DeleteFromEditButton.Name = "DeleteFromEditButton";
             this.DeleteFromEditButton.Size = new System.Drawing.Size(213, 23);
             this.DeleteFromEditButton.TabIndex = 5;
             this.DeleteFromEditButton.Text = "Удалить товар из списка изменяемых";
             this.DeleteFromEditButton.UseVisualStyleBackColor = true;
+            this.DeleteFromEditButton.Click += new System.EventHandler(this.DeleteFromEditButton_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(320, 6);
+            this.label1.Location = new System.Drawing.Point(400, 6);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(107, 13);
             this.label1.TabIndex = 6;
@@ -108,7 +113,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(309, 271);
+            this.label2.Location = new System.Drawing.Point(400, 271);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(120, 13);
             this.label2.TabIndex = 7;
@@ -134,7 +139,7 @@
             // 
             // CancelFormButton
             // 
-            this.CancelFormButton.Location = new System.Drawing.Point(650, 515);
+            this.CancelFormButton.Location = new System.Drawing.Point(786, 515);
             this.CancelFormButton.Name = "CancelFormButton";
             this.CancelFormButton.Size = new System.Drawing.Size(81, 23);
             this.CancelFormButton.TabIndex = 10;
@@ -156,7 +161,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(742, 545);
+            this.ClientSize = new System.Drawing.Size(879, 545);
             this.Controls.Add(this.CreateDocFile);
             this.Controls.Add(this.CancelFormButton);
             this.Controls.Add(this.FinalizeFormButton);
@@ -173,6 +178,7 @@
             this.Text = "Регистрация отгрузки/завоза товара";
             this.Load += new System.EventHandler(this.WarehouseEditForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.MainEditDataView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.warehouseBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.OldMainDataView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -193,5 +199,6 @@
         private System.Windows.Forms.Button FinalizeFormButton;
         private System.Windows.Forms.Button CancelFormButton;
         private System.Windows.Forms.CheckBox CreateDocFile;
+        private System.Windows.Forms.BindingSource warehouseBindingSource;
     }
 }
