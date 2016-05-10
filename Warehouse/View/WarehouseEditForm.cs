@@ -92,7 +92,21 @@ namespace Warehouse
         private void AddToEditButton_Click(object sender, EventArgs e)
         {
             OneItemEditForm editForm = new OneItemEditForm();
-            editForm.Show();
+            editForm.ShowDialog();
+            newEdit.Add((Item)editForm.ReturnedItem);
+            n1.RefreshDataView(MainEditDataView, newEdit);
+            MainEditDataView["QChange", MainEditDataView.RowCount - 1].ReadOnly = true;
+        }
+
+        private void NewSearchBox_TextChanged(object sender, EventArgs e)
+        {
+            OldMainDataView.DataSource = ((Warehouse)(n1.OuterAccessToDBView.DataSource)).SearchName(OldSearchBox.Text);
+
+        }
+
+        private void OldSearchBox_TextChanged(object sender, EventArgs e)
+        {
+            OldMainDataView.DataSource = ((Warehouse)(n1.OuterAccessToDBView.DataSource)).SearchName(OldSearchBox.Text);
         }
     }
 }

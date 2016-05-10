@@ -32,7 +32,6 @@
             this.QuanityLabel = new System.Windows.Forms.Label();
             this.PricePerItemLabel = new System.Windows.Forms.Label();
             this.UnitsPerItem = new System.Windows.Forms.Label();
-            this.LastEditLabel = new System.Windows.Forms.Label();
             this.UnitTypeLabel = new System.Windows.Forms.Label();
             this.UnitFactorLabel = new System.Windows.Forms.Label();
             this.NameTextBox = new System.Windows.Forms.TextBox();
@@ -41,7 +40,6 @@
             this.UnitFactorComboBox = new System.Windows.Forms.ComboBox();
             this.PricePerUnitTextBox = new System.Windows.Forms.TextBox();
             this.UnitsPerItemTextBox = new System.Windows.Forms.TextBox();
-            this.LastQuanityChangeTextBox = new System.Windows.Forms.TextBox();
             this.EditAcceptButton = new System.Windows.Forms.Button();
             this.EditCancelButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -82,15 +80,6 @@
             this.UnitsPerItem.TabIndex = 3;
             this.UnitsPerItem.Text = "Единиц счета в единице товара";
             // 
-            // LastEditLabel
-            // 
-            this.LastEditLabel.AutoSize = true;
-            this.LastEditLabel.Location = new System.Drawing.Point(111, 205);
-            this.LastEditLabel.Name = "LastEditLabel";
-            this.LastEditLabel.Size = new System.Drawing.Size(135, 13);
-            this.LastEditLabel.TabIndex = 4;
-            this.LastEditLabel.Text = "Изменения в количестве";
-            // 
             // UnitTypeLabel
             // 
             this.UnitTypeLabel.AutoSize = true;
@@ -125,17 +114,21 @@
             // 
             // UnitTypeComboBox
             // 
+            this.UnitTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.UnitTypeComboBox.FormattingEnabled = true;
             this.UnitTypeComboBox.Items.AddRange(new object[] {
             "Вес",
-            "Объем"});
+            "Объем",
+            "Количество"});
             this.UnitTypeComboBox.Location = new System.Drawing.Point(12, 103);
             this.UnitTypeComboBox.Name = "UnitTypeComboBox";
             this.UnitTypeComboBox.Size = new System.Drawing.Size(164, 21);
             this.UnitTypeComboBox.TabIndex = 11;
+            this.UnitTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.UnitTypeComboBox_SelectedIndexChanged);
             // 
             // UnitFactorComboBox
             // 
+            this.UnitFactorComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.UnitFactorComboBox.FormattingEnabled = true;
             this.UnitFactorComboBox.Location = new System.Drawing.Point(182, 103);
             this.UnitFactorComboBox.Name = "UnitFactorComboBox";
@@ -156,16 +149,9 @@
             this.UnitsPerItemTextBox.Size = new System.Drawing.Size(334, 20);
             this.UnitsPerItemTextBox.TabIndex = 14;
             // 
-            // LastQuanityChangeTextBox
-            // 
-            this.LastQuanityChangeTextBox.Location = new System.Drawing.Point(12, 221);
-            this.LastQuanityChangeTextBox.Name = "LastQuanityChangeTextBox";
-            this.LastQuanityChangeTextBox.Size = new System.Drawing.Size(334, 20);
-            this.LastQuanityChangeTextBox.TabIndex = 15;
-            // 
             // EditAcceptButton
             // 
-            this.EditAcceptButton.Location = new System.Drawing.Point(12, 247);
+            this.EditAcceptButton.Location = new System.Drawing.Point(12, 208);
             this.EditAcceptButton.Name = "EditAcceptButton";
             this.EditAcceptButton.Size = new System.Drawing.Size(143, 23);
             this.EditAcceptButton.TabIndex = 16;
@@ -175,7 +161,7 @@
             // 
             // EditCancelButton
             // 
-            this.EditCancelButton.Location = new System.Drawing.Point(197, 247);
+            this.EditCancelButton.Location = new System.Drawing.Point(197, 208);
             this.EditCancelButton.Name = "EditCancelButton";
             this.EditCancelButton.Size = new System.Drawing.Size(149, 23);
             this.EditCancelButton.TabIndex = 17;
@@ -187,10 +173,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(355, 276);
+            this.ClientSize = new System.Drawing.Size(355, 240);
             this.Controls.Add(this.EditCancelButton);
             this.Controls.Add(this.EditAcceptButton);
-            this.Controls.Add(this.LastQuanityChangeTextBox);
             this.Controls.Add(this.UnitsPerItemTextBox);
             this.Controls.Add(this.PricePerUnitTextBox);
             this.Controls.Add(this.UnitFactorComboBox);
@@ -199,7 +184,6 @@
             this.Controls.Add(this.NameTextBox);
             this.Controls.Add(this.UnitFactorLabel);
             this.Controls.Add(this.UnitTypeLabel);
-            this.Controls.Add(this.LastEditLabel);
             this.Controls.Add(this.UnitsPerItem);
             this.Controls.Add(this.PricePerItemLabel);
             this.Controls.Add(this.QuanityLabel);
@@ -217,7 +201,6 @@
         private System.Windows.Forms.Label QuanityLabel;
         private System.Windows.Forms.Label PricePerItemLabel;
         private System.Windows.Forms.Label UnitsPerItem;
-        private System.Windows.Forms.Label LastEditLabel;
         private System.Windows.Forms.Label UnitTypeLabel;
         private System.Windows.Forms.Label UnitFactorLabel;
         private System.Windows.Forms.TextBox NameTextBox;
@@ -226,7 +209,6 @@
         private System.Windows.Forms.ComboBox UnitFactorComboBox;
         private System.Windows.Forms.TextBox PricePerUnitTextBox;
         private System.Windows.Forms.TextBox UnitsPerItemTextBox;
-        private System.Windows.Forms.TextBox LastQuanityChangeTextBox;
         private System.Windows.Forms.Button EditAcceptButton;
         private System.Windows.Forms.Button EditCancelButton;
     }

@@ -73,6 +73,7 @@
             this.OldSearchBox.Name = "OldSearchBox";
             this.OldSearchBox.Size = new System.Drawing.Size(855, 20);
             this.OldSearchBox.TabIndex = 2;
+            this.OldSearchBox.TextChanged += new System.EventHandler(this.OldSearchBox_TextChanged);
             // 
             // NewSearchBox
             // 
@@ -80,6 +81,7 @@
             this.NewSearchBox.Name = "NewSearchBox";
             this.NewSearchBox.Size = new System.Drawing.Size(855, 20);
             this.NewSearchBox.TabIndex = 3;
+            this.NewSearchBox.TextChanged += new System.EventHandler(this.NewSearchBox_TextChanged);
             // 
             // AddToEditButton
             // 
