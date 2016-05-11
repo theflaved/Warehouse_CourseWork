@@ -15,6 +15,7 @@ namespace Warehouse
     {
         private Form1 n1;
         private Warehouse newEdit;
+        public object outerEdit => newEdit;
         public WarehouseEditForm()
         {
             InitializeComponent();
@@ -23,7 +24,7 @@ namespace Warehouse
             foreach (DataGridViewColumn column in MainEditDataView.Columns) column.ReadOnly = true;
             CreateUnboundTextBoxColumn();
             n1 = new Form1();
-            OldMainDataView.DataSource = n1.OuterAccessToDBView.DataSource;
+            OldMainDataView.DataSource = n1.OuterAccessToDBView;
             n1.SetDataFormats(OldMainDataView);
         }
         private void WarehouseEditForm_Load(object sender, EventArgs e)
@@ -59,13 +60,18 @@ namespace Warehouse
             else
             {
                 newEdit.Add((Item)OldMainDataView.Rows[rowIndex].DataBoundItem);
-                List<int> temp= new List<int>();
-                for (int i = 0; i < MainEditDataView.RowCount; i++) temp.Add(
-                    Convert.ToInt32(MainEditDataView["QChange", i].Value));
-                n1.RefreshDataView(MainEditDataView, newEdit);
-                for (int i = 0; i < temp.Count; i++)
-                    MainEditDataView["QChange", i].Value = temp[i];
+                RefreshMainEditDataView();
             }
+        }
+
+        private void RefreshMainEditDataView()
+        {
+            List<int> temp = new List<int>();
+            for (int i = 0; i < MainEditDataView.RowCount; i++) temp.Add(
+                Convert.ToInt32(MainEditDataView["QChange", i].Value));
+            n1.RefreshDataView(MainEditDataView, newEdit);
+            for (int i = 0; i < temp.Count; i++)
+                MainEditDataView["QChange", i].Value = temp[i];
         }
 
         private void DeleteFromEditButton_Click(object sender, EventArgs e)
@@ -94,19 +100,28 @@ namespace Warehouse
             OneItemEditForm editForm = new OneItemEditForm();
             editForm.ShowDialog();
             newEdit.Add((Item)editForm.ReturnedItem);
-            n1.RefreshDataView(MainEditDataView, newEdit);
+            RefreshMainEditDataView();
             MainEditDataView["QChange", MainEditDataView.RowCount - 1].ReadOnly = true;
         }
 
         private void NewSearchBox_TextChanged(object sender, EventArgs e)
         {
-            OldMainDataView.DataSource = ((Warehouse)(n1.OuterAccessToDBView.DataSource)).SearchName(OldSearchBox.Text);
+            //OldMainDataView.DataSource = ((Warehouse)(n1.OuterAccessToDBView.DataSource)).SearchName(OldSearchBox.Text);
 
         }
 
         private void OldSearchBox_TextChanged(object sender, EventArgs e)
         {
-            OldMainDataView.DataSource = ((Warehouse)(n1.OuterAccessToDBView.DataSource)).SearchName(OldSearchBox.Text);
+            //OldMainDataView.DataSource = ((Warehouse)(n1.OuterAccessToDBView.DataSource)).SearchName(OldSearchBox.Text);
+        }
+
+        private void FinalizeFormButton_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < MainEditDataView.RowCount; i++)
+            {
+                if(MainEditDataView["QChange", i].Value != "")newEdit[i].InvChangeNow(Convert.ToDouble(MainEditDataView["QChange",i].Value));
+            }
+            Close();
         }
     }
 }

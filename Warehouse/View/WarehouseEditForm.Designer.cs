@@ -138,6 +138,7 @@
             this.FinalizeFormButton.TabIndex = 9;
             this.FinalizeFormButton.Text = "Завершить";
             this.FinalizeFormButton.UseVisualStyleBackColor = true;
+            this.FinalizeFormButton.Click += new System.EventHandler(this.FinalizeFormButton_Click);
             // 
             // CancelFormButton
             // 

@@ -137,5 +137,18 @@ namespace Warehouse
             }
             return result;
         }
+
+        public void AddSetItem(Item searchItem ,Item replaceItem)
+        {
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (this[i].Equals(searchItem))
+                {
+                    this[i] = replaceItem;
+                    return;
+                }
+            }
+            this.Add(replaceItem);
+        }
     }
 }

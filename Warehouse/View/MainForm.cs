@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
@@ -9,7 +10,7 @@ namespace Warehouse
     public partial class Form1 : Form
     {
         private WarehouseEditForm EditForm;
-        public DataGridView OuterAccessToDBView => MainDataView;
+        public object OuterAccessToDBView => _data;
         public object MainDataViewSource
         {
             get
@@ -28,15 +29,6 @@ namespace Warehouse
             InitializeComponent();
             Warehouse n = new Warehouse();
             _data = n;
-            n.Add(new Item("Жарений кабанчик", 25, new Weight(20, 1, "кг.")));
-            n.Add(new Item("Огурцы", 90, new Volume(20.53, 1, "л.")));
-            n.Add(new Item("Помидоры", 33, new Volume(40, 1, "л.")));
-            n.Add(new Item("Жарений кабанчик 3", 25, new Weight(20, 1, "кг.")));
-            n.Add(new Item("Огурцы 3", 90, new Volume(20.53, 1, "л.")));
-            n.Add(new Item("Помидоры 3", 33, new Volume(40, 1, "л.")));
-            n.Add(new Item("Жарений кабанчик 2", 25, new Weight(20, 1, "кг.")));
-            n.Add(new Item("Огурцы 2", 90, new Volume(20.53, 1, "л.")));
-            n.Add(new Item("Помидоры 2", 33, new Volume(40, 1, "л.")));
             MainDataViewSource = _data;
             MainPicDrawer.Image = Properties.Resources.buildings64;
             SetDataFormats(MainDataView);
@@ -74,7 +66,7 @@ namespace Warehouse
         }
         private void SearchBox_TextChanged(object sender, EventArgs e)
         {
-            MainDataViewSource = _data.SearchName(SearchBox.Text);
+            RefreshDataView(MainDataView, _data.SearchName(SearchBox.Text));
         }
         private void ReadFileButton_Click(object sender, EventArgs e)
         {
@@ -89,6 +81,7 @@ namespace Warehouse
                 Stream stream = new FileStream(openFile.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
                 _data = (Warehouse)formatter.Deserialize(stream);
                 stream.Close();
+                RefreshDataView(MainDataView, _data);
             }
             RefreshDataView(MainDataView, _data);
         }
@@ -110,15 +103,22 @@ namespace Warehouse
         private void DeliverToWarehouseButton_Click(object sender, EventArgs e)
         {
             EditForm = new WarehouseEditForm();
-            EditForm.Show();
+            EditForm.ShowDialog();
+            foreach (var item in (Warehouse)EditForm.outerEdit)
+            {
+                _data.AddSetItem(item, item);
+            }
+            RefreshDataView(MainDataView, _data);
         }
         public void RefreshDataView(DataGridView view, object data)
         {
-            CurrencyManager cm = (CurrencyManager)view.BindingContext[data];
+            /*CurrencyManager cm = (CurrencyManager)view.BindingContext[data];
             if (cm != null)
             {
                 cm.Refresh();
-            }
+            }*/
+            view.DataSource = null;
+            view.DataSource = data;
             SetDataFormats(view);
         }
         //TODO: Fix this govnocode
@@ -128,7 +128,7 @@ namespace Warehouse
             {
                 DGV.Columns["CompletePriceSum"].DefaultCellStyle.Format = ("#,###.00 грн.");
                 DGV.Columns["Quanity"].DefaultCellStyle.Format = ("#,## шт.;(#,## шт.)");
-                DGV.Columns["LastQuanityChange"].DefaultCellStyle.Format = ("#,## шт.;(#,## шт.)");
+                //DGV.Columns["LastQuanityChange"].DefaultCellStyle.Format = ("#,## шт.;(#,## шт.)");
             }
             catch (NullReferenceException)
             {

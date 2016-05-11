@@ -67,7 +67,7 @@ namespace Warehouse
         
         private void UnitTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //TODO: FIX THIS SHIT
+            //TODO: FIX THIS
             UnitFactorComboBox.Items.Clear();
             switch (UnitTypeComboBox.Text)
             {

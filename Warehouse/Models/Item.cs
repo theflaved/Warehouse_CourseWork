@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 
 namespace Warehouse
@@ -30,6 +31,23 @@ namespace Warehouse
             Units = units;
             ItemLog.Add(le);
         }
+
+        public void InvChangeNow(double qChange)
+        {
+            ItemLog.Add(new LastEntry(qChange,DateTime.Now));
+            if(Quanity + qChange < 0) throw new InvalidDataException("Bad quanity");
+            Quanity += qChange;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() == this.GetType())
+            {
+                return (((Item) obj).Name == Name);
+            }
+            return false;
+        }
+
         public int CompareTo(Item other) => Quanity.CompareTo(other.Quanity);
     }
     [Serializable]
