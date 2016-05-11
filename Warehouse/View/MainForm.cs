@@ -10,7 +10,7 @@ namespace Warehouse
     public partial class Form1 : Form
     {
         private WarehouseEditForm EditForm;
-        public object OuterAccessToDBView => _data;
+        public DataGridView OuterAccessToDBView => MainDataView;
         public object MainDataViewSource
         {
             get
@@ -27,15 +27,15 @@ namespace Warehouse
         public Form1()
         {
             InitializeComponent();
-            Warehouse n = new Warehouse();
-            _data = n;
-            MainDataViewSource = _data;
-            MainPicDrawer.Image = Properties.Resources.buildings64;
-            SetDataFormats(MainDataView);
+
+
+            //SetDataFormats(MainDataView);
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            MainDataViewSource = _data;
+            MainPicDrawer.Image = Properties.Resources.buildings64;
         }
         private void EditItemButton_Click(object sender, EventArgs e)
         {
@@ -66,7 +66,8 @@ namespace Warehouse
         }
         private void SearchBox_TextChanged(object sender, EventArgs e)
         {
-            RefreshDataView(MainDataView, _data.SearchName(SearchBox.Text));
+            MainDataView.DataSource = _data.SearchName(SearchBox.Text);
+            RefreshDataView(MainDataView, _data);
         }
         private void ReadFileButton_Click(object sender, EventArgs e)
         {
@@ -80,6 +81,7 @@ namespace Warehouse
             {
                 Stream stream = new FileStream(openFile.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
                 _data = (Warehouse)formatter.Deserialize(stream);
+                MainDataView.DataSource = _data;
                 stream.Close();
                 RefreshDataView(MainDataView, _data);
             }
@@ -128,7 +130,7 @@ namespace Warehouse
             {
                 DGV.Columns["CompletePriceSum"].DefaultCellStyle.Format = ("#,###.00 грн.");
                 DGV.Columns["Quanity"].DefaultCellStyle.Format = ("#,## шт.;(#,## шт.)");
-                //DGV.Columns["LastQuanityChange"].DefaultCellStyle.Format = ("#,## шт.;(#,## шт.)");
+                DGV.Columns["LastQuanityChange"].DefaultCellStyle.Format = ("#,## шт.;(#,## шт.)");
             }
             catch (NullReferenceException)
             {

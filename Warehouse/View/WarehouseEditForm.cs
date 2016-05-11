@@ -24,8 +24,9 @@ namespace Warehouse
             foreach (DataGridViewColumn column in MainEditDataView.Columns) column.ReadOnly = true;
             CreateUnboundTextBoxColumn();
             n1 = new Form1();
-            OldMainDataView.DataSource = n1.OuterAccessToDBView;
-            n1.SetDataFormats(OldMainDataView);
+            OldMainDataView.DataSource = new Warehouse();
+            OldMainDataView.DataSource = ((Warehouse)n1.OuterAccessToDBView.DataSource);
+            //n1.SetDataFormats(OldMainDataView);
         }
         private void WarehouseEditForm_Load(object sender, EventArgs e)
         {
