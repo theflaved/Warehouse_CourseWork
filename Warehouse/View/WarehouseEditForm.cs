@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -16,20 +17,20 @@ namespace Warehouse
         private Form1 n1;
         private Warehouse newEdit;
         public object outerEdit => newEdit;
+        private bool _addedFlag;
         public WarehouseEditForm()
         {
             InitializeComponent();
-            newEdit = new Warehouse();
-            MainEditDataView.DataSource = newEdit;
-            foreach (DataGridViewColumn column in MainEditDataView.Columns) column.ReadOnly = true;
-            CreateUnboundTextBoxColumn();
-            n1 = new Form1();
-            OldMainDataView.DataSource = new Warehouse();
-            OldMainDataView.DataSource = ((Warehouse)n1.OuterAccessToDBView.DataSource);
-            //n1.SetDataFormats(OldMainDataView);
         }
         private void WarehouseEditForm_Load(object sender, EventArgs e)
         {
+            newEdit = new Warehouse();
+            MainEditDataView.DataSource = newEdit;
+            n1 = new Form1();
+            OldMainDataView.DataSource = ((Form1)Owner).MainDataViewSource;
+            foreach (DataGridViewColumn column in MainEditDataView.Columns) column.ReadOnly = true;
+            CreateUnboundTextBoxColumn();
+            n1.SetDataFormats(OldMainDataView);
         }
         private void CreateUnboundTextBoxColumn()
         {
@@ -61,16 +62,16 @@ namespace Warehouse
             else
             {
                 newEdit.Add((Item)OldMainDataView.Rows[rowIndex].DataBoundItem);
-                RefreshMainEditDataView();
+                RefreshMainEditDataView(newEdit);
             }
         }
 
-        private void RefreshMainEditDataView()
+        private void RefreshMainEditDataView(object source)
         {
             List<int> temp = new List<int>();
             for (int i = 0; i < MainEditDataView.RowCount; i++) temp.Add(
                 Convert.ToInt32(MainEditDataView["QChange", i].Value));
-            n1.RefreshDataView(MainEditDataView, newEdit);
+            n1.RefreshDataView(MainEditDataView, source);
             for (int i = 0; i < temp.Count; i++)
                 MainEditDataView["QChange", i].Value = temp[i];
         }
@@ -101,19 +102,19 @@ namespace Warehouse
             OneItemEditForm editForm = new OneItemEditForm();
             editForm.ShowDialog();
             newEdit.Add((Item)editForm.ReturnedItem);
-            RefreshMainEditDataView();
+            RefreshMainEditDataView(newEdit);
             MainEditDataView["QChange", MainEditDataView.RowCount - 1].ReadOnly = true;
         }
 
         private void NewSearchBox_TextChanged(object sender, EventArgs e)
         {
-            //OldMainDataView.DataSource = ((Warehouse)(n1.OuterAccessToDBView.DataSource)).SearchName(OldSearchBox.Text);
+            RefreshMainEditDataView(newEdit.SearchName(NewSearchBox.Text));
 
         }
 
         private void OldSearchBox_TextChanged(object sender, EventArgs e)
         {
-            //OldMainDataView.DataSource = ((Warehouse)(n1.OuterAccessToDBView.DataSource)).SearchName(OldSearchBox.Text);
+            OldMainDataView.DataSource = ((Warehouse)((Form1)Owner).MainDataViewSource).SearchName(OldSearchBox.Text);
         }
 
         private void FinalizeFormButton_Click(object sender, EventArgs e)
