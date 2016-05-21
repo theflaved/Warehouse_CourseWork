@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,7 +18,6 @@ namespace Warehouse
         private Form1 n1;
         private Warehouse newEdit;
         public object outerEdit => newEdit;
-        private bool _addedFlag;
         public WarehouseEditForm()
         {
             InitializeComponent();
@@ -106,23 +106,11 @@ namespace Warehouse
             MainEditDataView["QChange", MainEditDataView.RowCount - 1].ReadOnly = true;
         }
 
-        private void NewSearchBox_TextChanged(object sender, EventArgs e)
-        {
-            RefreshMainEditDataView(newEdit.SearchName(NewSearchBox.Text));
-
-        }
-
-        private void OldSearchBox_TextChanged(object sender, EventArgs e)
-        {
-            OldMainDataView.DataSource = ((Warehouse)((Form1)Owner).MainDataViewSource).SearchName(OldSearchBox.Text);
-        }
+        private void NewSearchBox_TextChanged(object sender, EventArgs e) => n1.searchInWarehouseDGV(MainEditDataView, NewSearchBox);
+        private void OldSearchBox_TextChanged(object sender, EventArgs e) => n1.searchInWarehouseDGV(OldMainDataView,OldSearchBox);
 
         private void FinalizeFormButton_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < MainEditDataView.RowCount; i++)
-            {
-                if(MainEditDataView["QChange", i].Value != "")newEdit[i].InvChangeNow(Convert.ToDouble(MainEditDataView["QChange",i].Value));
-            }
             Close();
         }
     }

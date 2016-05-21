@@ -116,7 +116,7 @@ namespace Warehouse
         {
             innerList = base.Items.ToList();
         }
-        #endregion
+        #endregion*/
         public Warehouse SearchName(string name)
         {
             if (name == "") return this;
@@ -138,17 +138,17 @@ namespace Warehouse
             return result;
         }
 
-        public void AddSetItem(Item searchItem ,Item replaceItem)
+        public void AddSetItem(Item replaceItem)
         {
             for (int i = 0; i < this.Count; i++)
             {
-                if (this[i].Equals(searchItem))
+                if (Contains(replaceItem))
                 {
                     this[i] = replaceItem;
                     return;
                 }
             }
-            this.Add(replaceItem);
+            Add(replaceItem);
         }
     }
 }

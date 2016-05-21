@@ -77,7 +77,6 @@
             // 
             // NewSearchBox
             // 
-            this.NewSearchBox.Enabled = false;
             this.NewSearchBox.Location = new System.Drawing.Point(12, 22);
             this.NewSearchBox.Name = "NewSearchBox";
             this.NewSearchBox.Size = new System.Drawing.Size(855, 20);

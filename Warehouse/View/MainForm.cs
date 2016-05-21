@@ -23,7 +23,6 @@ namespace Warehouse
             }
         }
         private Warehouse _dataCollection;
-        private BindingSource _data;
         public Form1()
         {
             InitializeComponent();
@@ -33,9 +32,7 @@ namespace Warehouse
         {
             Warehouse n = new Warehouse();
             _dataCollection = n;
-            _data = new BindingSource();
-            _data.DataSource = _dataCollection;
-            MainDataViewSource = _data;
+            MainDataViewSource = _dataCollection;
             MainPicDrawer.Image = Properties.Resources.buildings64;
             SetDataFormats(MainDataView);
         }
@@ -52,8 +49,8 @@ namespace Warehouse
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                     MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                 {
-                    _data.Remove((Item)toDelete);
-                    RefreshDataView(MainDataView,_data);
+                    _dataCollection.Remove((Item)toDelete);
+                    RefreshDataView(MainDataView,_dataCollection);
                 }
             }
             catch (NullReferenceException)
@@ -68,7 +65,7 @@ namespace Warehouse
         }
         private void SearchBox_TextChanged(object sender, EventArgs e)
         {
-            _data.DataSource = _dataCollection.SearchName(SearchBox.Text);
+            searchInWarehouseDGV(MainDataView,SearchBox);
         }
         private void ReadFileButton_Click(object sender, EventArgs e)
         {
@@ -98,7 +95,7 @@ namespace Warehouse
             if (saveFile.ShowDialog() == DialogResult.OK)
             {
                 Stream stream = new FileStream(saveFile.FileName, FileMode.Create, FileAccess.Write, FileShare.None);
-                formatter.Serialize(stream, _data);
+                formatter.Serialize(stream, _dataCollection);
                 stream.Close();
             }
         }
@@ -106,6 +103,10 @@ namespace Warehouse
         {
             EditForm = new WarehouseEditForm();
             EditForm.ShowDialog(this);
+            foreach (Item item in (Warehouse)EditForm.outerEdit)
+            {
+                _dataCollection.AddSetItem(item);
+            }
             RebindDataView(MainDataView,_dataCollection);
         }
         public void RefreshDataView(DataGridView view, object data)
@@ -136,6 +137,22 @@ namespace Warehouse
             catch (NullReferenceException)
             {
                 throw new ArgumentException("Bad DGV");
+            }
+        }
+
+        public void searchInWarehouseDGV(DataGridView view, TextBox box)
+        {
+            string searchValue = box.Text;
+            foreach (object row in view.Rows)
+            {
+                ((DataGridViewRow)row).Visible = true;
+            }
+            if (box.Text == "") return;
+            view.CurrentCell = null;
+            for (int i = 0; i < view.RowCount; i++)
+            {
+                if (!((Item)view.Rows[i].DataBoundItem).Name.ToLower().Contains(box.Text.ToLower()))
+                    view.Rows[i].Visible = false;
             }
         }
     }
