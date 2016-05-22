@@ -16,32 +16,49 @@ namespace Warehouse
     [Serializable]
     class Warehouse : BindingList<Item>, ICloneable
     {
+        public int _idCounter { get; private set; }
         private List<Item> innerList;
         private ListSortDirection sortDirection;
-        [NonSerialized]
-        private PropertyDescriptor sortProperty;
+        [NonSerialized] private PropertyDescriptor sortProperty;
+
         Action<Warehouse, List<Item>>
-               populateBaseList = (a, b) => a.ResetItems(b);
+            populateBaseList = (a, b) => a.ResetItems(b);
+
         private static Dictionary<string, Func<List<Item>, IEnumerable<Item>>>
             cachedOrderByExpressions = new Dictionary<string, Func<List<Item>, IEnumerable<Item>>>();
+
         public Warehouse()
         {
             innerList = new List<Item>();
+            _idCounter = 0;
         }
+
+        public Warehouse(int idCounter) : this()
+        {
+            _idCounter = idCounter;
+        }
+
         public Warehouse(IEnumerable<Item> listToClone)
         {
             innerList = listToClone.ToList();
             populateBaseList(this, innerList);
+            _idCounter = 0;
         }
-        /// TODO: WHAT DOES THAT PART DO? xD
-        #region unknownCode_lol
+
+        public Warehouse(IEnumerable<Item> listToClone, int idCounter) : this(listToClone)
+        {
+            _idCounter = idCounter;
+        }
+
         protected override void ApplySortCore(PropertyDescriptor prop,
-                        ListSortDirection direction)
+            ListSortDirection direction)
         {
             sortProperty = prop;
 
             var orderByMethodName = sortDirection ==
-                ListSortDirection.Ascending ? "OrderBy" : "OrderByDescending";
+                                    ListSortDirection.Ascending
+                ? "OrderBy"
+                : "OrderByDescending";
             var cacheKey = typeof(Item).GUID + prop.Name + orderByMethodName;
 
             if (!cachedOrderByExpressions.ContainsKey(cacheKey))
@@ -51,29 +68,33 @@ namespace Warehouse
 
             ResetItems(cachedOrderByExpressions[cacheKey](innerList).ToList());
             ResetBindings();
-            sortDirection = sortDirection == ListSortDirection.Ascending ?
-                            ListSortDirection.Descending : ListSortDirection.Ascending;
+            sortDirection = sortDirection == ListSortDirection.Ascending
+                ? ListSortDirection.Descending
+                : ListSortDirection.Ascending;
         }
         private void CreateOrderByMethod(PropertyDescriptor prop,
-                     string orderByMethodName, string cacheKey)
+            string orderByMethodName, string cacheKey)
         {
             var sourceParameter = Expression.Parameter(typeof(List<Item>), "source");
             var lambdaParameter = Expression.Parameter(typeof(Item), "lambdaParameter");
             var accesedMember = typeof(Item).GetProperty(prop.Name);
             var propertySelectorLambda =
                 Expression.Lambda(Expression.MakeMemberAccess(lambdaParameter,
-                                  accesedMember), lambdaParameter);
+                    accesedMember), lambdaParameter);
             var orderByMethod = typeof(Enumerable).GetMethods()
-                                          .Where(a => a.Name == orderByMethodName &&
-                                                       a.GetParameters().Length == 2)
-                                          .Single()
-                                          .MakeGenericMethod(typeof(Item), prop.PropertyType);
+                .Where(a => a.Name == orderByMethodName &&
+                            a.GetParameters().Length == 2)
+                .Single()
+                .MakeGenericMethod(typeof(Item), prop.PropertyType);
 
             var orderByExpression = Expression.Lambda<Func<List<Item>, IEnumerable<Item>>>(
-                                        Expression.Call(orderByMethod,
-                                                new Expression[] { sourceParameter,
-                                                               propertySelectorLambda }),
-                                                sourceParameter);
+                Expression.Call(orderByMethod,
+                    new Expression[]
+                    {
+                        sourceParameter,
+                        propertySelectorLambda
+                    }),
+                sourceParameter);
 
             cachedOrderByExpressions.Add(cacheKey, orderByExpression.Compile());
         }
@@ -93,41 +114,39 @@ namespace Warehouse
         }
         protected override bool SupportsSortingCore
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
         protected override ListSortDirection SortDirectionCore
         {
-            get
-            {
-                return sortDirection;
-            }
+            get { return sortDirection; }
         }
         protected override PropertyDescriptor SortPropertyCore
         {
-            get
-            {
-                return sortProperty;
-            }
+            get { return sortProperty; }
         }
         protected override void OnListChanged(ListChangedEventArgs e)
         {
             innerList = base.Items.ToList();
         }
-        #endregion*/
-        public Warehouse SearchName(string name)
+
+        public void AddWithID(Item item, bool replaceFlag = false)
         {
-            if (name == "") return this;
-            Warehouse result = new Warehouse();
-            name = name.ToLower();
-            foreach (Item colItem in this)
+            if (Object.ReferenceEquals(item.ID,null))
             {
-                if(colItem.Name.ToLower().Contains(name)) result.Add(colItem);
+                item.ID = ++_idCounter;
+                Add(item);
             }
-            return result;
+            else
+            {
+                if (Contains(item) && replaceFlag) this[IndexOfID(item)] = item;
+                else
+                {
+                    item.ID = ++_idCounter;
+                    Add(item);
+                }
+            }
         }
+
         public object Clone()
         {
             Warehouse result = new Warehouse();
@@ -140,15 +159,30 @@ namespace Warehouse
 
         public void AddSetItem(Item replaceItem)
         {
-            for (int i = 0; i < this.Count; i++)
+            if (Contains(replaceItem))
             {
-                if (Contains(replaceItem))
-                {
-                    this[i] = replaceItem;
-                    return;
-                }
+                this[IndexOf(replaceItem)] = replaceItem;
+                return;
             }
             Add(replaceItem);
+        }
+
+        public new bool Contains(Item item)
+        {
+            foreach (Item itemCol in this)
+            {
+                if (item.ID == itemCol.ID) return true;
+            }
+            return false;
+        }
+
+        public int IndexOfID(Item item)
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                if (this[i].ID == item.ID) return i;
+            }
+            return -1;
         }
     }
 }

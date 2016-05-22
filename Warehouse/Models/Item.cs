@@ -7,8 +7,15 @@ using System.Linq;
 namespace Warehouse
 {
     [Serializable]
-    class Item : IComparable<Item>
+    class Item : IComparable<Item>, ICloneable
     {
+        private int? _ID;
+        [DisplayName("ID")]
+        public int? ID
+        {
+            get { return _ID; }
+            set { _ID = value; }
+        }
         [DisplayName("Наименование")]
         public string Name { get; set; }
         [DisplayName("Колличество")]
@@ -43,12 +50,20 @@ namespace Warehouse
         {
             if (obj.GetType() == this.GetType())
             {
-                return (((Item) obj).Name == Name);
+                return (((Item) obj).ID == ID);
             }
             return false;
         }
 
         public int CompareTo(Item other) => Quanity.CompareTo(other.Quanity);
+
+        public object Clone()
+        {
+            Item result = new Item(Name, Quanity, Units);
+            result.ItemLog.AddRange(ItemLog.AsEnumerable());
+            result.ID = ID;
+            return result;
+        }
     }
     [Serializable]
     class LastEntry

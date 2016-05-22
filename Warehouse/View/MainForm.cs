@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
+using Microsoft.Office.Interop.Word;
 
 namespace Warehouse
 {
@@ -10,19 +11,16 @@ namespace Warehouse
     {
         private WarehouseEditForm EditForm;
         public DataGridView OuterAccessToDBView => MainDataView;
+
         public object MainDataViewSource
         {
-            get
-            {
-                return MainDataView.DataSource;
-            }
+            get { return MainDataView.DataSource; }
 
-            set
-            {
-                MainDataView.DataSource = value;
-            }
+            set { MainDataView.DataSource = value; }
         }
+
         private Warehouse _dataCollection;
+
         public Form1()
         {
             InitializeComponent();
@@ -36,10 +34,7 @@ namespace Warehouse
             MainPicDrawer.Image = Properties.Resources.buildings64;
             SetDataFormats(MainDataView);
         }
-        private void EditItemButton_Click(object sender, EventArgs e)
-        {
-            
-        }
+
         private void DeleteButton_Click(object sender, EventArgs e)
         {
             try
@@ -49,8 +44,8 @@ namespace Warehouse
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                     MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                 {
-                    _dataCollection.Remove((Item)toDelete);
-                    RefreshDataView(MainDataView,_dataCollection);
+                    _dataCollection.Remove((Item) toDelete);
+                    RefreshDataView(MainDataView, _dataCollection);
                 }
             }
             catch (NullReferenceException)
@@ -59,10 +54,84 @@ namespace Warehouse
                     MessageBoxDefaultButton.Button1);
             }
         }
+
         private void PrintDBToDocButton_Click(object sender, EventArgs e)
         {
-            //TODO: Implement DB parsing to Doc(x?) file (Microsoft.Office.Interop.Word)
+            if (_dataCollection.Count == 0)
+            {
+                MessageBox.Show("База данных не загружена, либо не создана!", "Ошибка", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                return;
+            }
+            Microsoft.Office.Interop.Word.Application winword = new Microsoft.Office.Interop.Word.Application();
+            winword.ShowAnimation = false;
+            winword.Visible = false;
+            object missing = System.Reflection.Missing.Value;
+            Document document = winword.Documents.Add(ref missing, ref missing,
+                ref missing, ref missing);
+
+            document.Content.SetRange(0, 0);
+
+            //Add paragraph with Heading 1 style
+            Paragraph para1 = document.Content.Paragraphs.Add(ref missing);
+            object styleHeading1 = "Heading 1";
+            para1.Range.set_Style(ref styleHeading1);
+            para1.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
+            para1.Range.Text = "Отчет о складе " + DateTime.Now;
+            para1.Range.InsertParagraphAfter();
+
+            Table firstTable = document.Tables.Add(para1.Range, _dataCollection.Count + 1, 6, ref missing, ref missing);
+
+            //firstTable.set_Style(ref);
+            firstTable.Borders.Enable = 1;
+            firstTable.Rows[1].Cells[1].Range.Text = "Название";
+            firstTable.Rows[1].Cells[2].Range.Text = "Количество";
+            firstTable.Rows[1].Cells[3].Range.Text = "Цена за единицу";
+            firstTable.Rows[1].Cells[4].Range.Text = "Общая цена товара";
+            firstTable.Rows[1].Cells[5].Range.Text = "Дата последнего изменения";
+            firstTable.Rows[1].Cells[6].Range.Text = "Последнее изменение";
+            int dataIndex = 0;
+            Item current;
+            foreach (Row row in firstTable.Rows)
+            {
+                if(row.Index == 1) continue;;
+                if (dataIndex > _dataCollection.Count - 1) break;
+                current = _dataCollection[dataIndex];
+                row.Cells[1].Range.Text = current.Name;
+                row.Cells[2].Range.Text = current.Quanity.ToString();
+                row.Cells[3].Range.Text = current.Units.ToString();
+                row.Cells[4].Range.Text = current.CompletePriceSum.ToString();
+                row.Cells[5].Range.Text = current.LastEntry.ToString();
+                row.Cells[6].Range.Text = current.LastQuanityChange.ToString();
+                dataIndex++;
+            }
+            //Save the document
+            try
+            {
+                SaveFileDialog saveFile = new SaveFileDialog
+                {
+                    FileName = DateTime.Now.Date + ".docx",
+                    Filter = "All files (*.*)|*.*"
+                };
+                if (saveFile.ShowDialog() == DialogResult.OK)
+                {
+                    object path = saveFile.FileName;
+                    document.SaveAs2(ref path);
+                    document.Close(ref missing, ref missing, ref missing);
+                    winword.Quit(ref missing, ref missing, ref missing);
+                    MessageBox.Show(@"Ведомость создана");
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"При формировании ведомости произошла ошибка. Повторите попытку еще раз.");
+            }
         }
+
         private void SearchBox_TextChanged(object sender, EventArgs e)
         {
             searchInWarehouseDGV(MainDataView,SearchBox);
@@ -105,10 +174,11 @@ namespace Warehouse
             EditForm.ShowDialog(this);
             foreach (Item item in (Warehouse)EditForm.outerEdit)
             {
-                _dataCollection.AddSetItem(item);
+                _dataCollection.AddWithID(item,true);
             }
             RebindDataView(MainDataView,_dataCollection);
         }
+        //TODO: Fix this (Have no idea how)
         public void RefreshDataView(DataGridView view, object data)
         {
             CurrencyManager cm = (CurrencyManager)(view.BindingContext[data]);
@@ -125,7 +195,6 @@ namespace Warehouse
             view.DataSource = data;
             SetDataFormats(view);
         }
-        //TODO: Fix this govnocode
         public void SetDataFormats(DataGridView DGV)
         {
             try
@@ -145,6 +214,7 @@ namespace Warehouse
             string searchValue = box.Text;
             foreach (object row in view.Rows)
             {
+                if(((DataGridViewRow)row).Index == -1) continue;
                 ((DataGridViewRow)row).Visible = true;
             }
             if (box.Text == "") return;

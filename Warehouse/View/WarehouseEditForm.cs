@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -18,14 +19,28 @@ namespace Warehouse
         private Form1 n1;
         private Warehouse newEdit;
         public object outerEdit => newEdit;
+        private const int CP_NOCLOSE_BUTTON = 0x200;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams myCp = base.CreateParams;
+                myCp.ClassStyle = myCp.ClassStyle | CP_NOCLOSE_BUTTON;
+                return myCp;
+            }
+        }
         public WarehouseEditForm()
         {
             InitializeComponent();
         }
         private void WarehouseEditForm_Load(object sender, EventArgs e)
         {
-            newEdit = new Warehouse();
+            newEdit = new Warehouse(((Warehouse)((Form1)Owner).MainDataViewSource)._idCounter);
             MainEditDataView.DataSource = newEdit;
+            foreach (DataGridViewColumn column in MainEditDataView.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
             n1 = new Form1();
             OldMainDataView.DataSource = ((Form1)Owner).MainDataViewSource;
             foreach (DataGridViewColumn column in MainEditDataView.Columns) column.ReadOnly = true;
@@ -53,29 +68,41 @@ namespace Warehouse
 
         private void OldMainDataView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            int rowIndex = OldMainDataView.SelectedCells[0].RowIndex;
-            Item workingItem = (Item)OldMainDataView.Rows[rowIndex].DataBoundItem;
-            if (newEdit.Contains(workingItem))
+            if (OldMainDataView.SelectedCells != null && OldMainDataView.SelectedCells.Count != 0)
             {
-                MessageBox.Show("Товар уже есть в списке изменяемых!");
-            }
-            else
-            {
-                newEdit.Add((Item)OldMainDataView.Rows[rowIndex].DataBoundItem);
-                RefreshMainEditDataView(newEdit);
+                int rowIndex = OldMainDataView.SelectedCells[0].RowIndex;
+                if (rowIndex == -1) return;
+                Item workingItem = (Item) OldMainDataView.Rows[rowIndex].DataBoundItem;
+                if (newEdit.Contains(workingItem))
+                {
+                    MessageBox.Show("Товар уже есть в списке изменяемых!");
+                }
+                else
+                {
+                    newEdit.Add((Item) OldMainDataView.Rows[rowIndex].DataBoundItem);
+                    RefreshMainEditDataView(newEdit);
+                }
             }
         }
-
         private void RefreshMainEditDataView(object source)
         {
-            List<int> temp = new List<int>();
-            for (int i = 0; i < MainEditDataView.RowCount; i++) temp.Add(
-                Convert.ToInt32(MainEditDataView["QChange", i].Value));
+            List<object> temp = new List<object>();
+            List<bool> temp2 = new List<bool>();
+            for (int i = 0; i < MainEditDataView.RowCount; i++)
+            {
+                var value = MainEditDataView["QChange", i].Value;
+                if (value != null && value.ToString() != "")
+                    temp.Add(Convert.ToInt32(MainEditDataView["QChange", i].Value));
+                else temp.Add("");
+                temp2.Add(Convert.ToBoolean(MainEditDataView["QChange", i].ReadOnly));
+            }
             n1.RefreshDataView(MainEditDataView, source);
             for (int i = 0; i < temp.Count; i++)
+            {
                 MainEditDataView["QChange", i].Value = temp[i];
+                MainEditDataView["QChange", i].ReadOnly = temp2[i];
+            }
         }
-
         private void DeleteFromEditButton_Click(object sender, EventArgs e)
         {
             try
@@ -96,21 +123,36 @@ namespace Warehouse
                     MessageBoxDefaultButton.Button1);
             }
         }
-
         private void AddToEditButton_Click(object sender, EventArgs e)
         {
             OneItemEditForm editForm = new OneItemEditForm();
-            editForm.ShowDialog();
-            newEdit.Add((Item)editForm.ReturnedItem);
-            RefreshMainEditDataView(newEdit);
-            MainEditDataView["QChange", MainEditDataView.RowCount - 1].ReadOnly = true;
+            if (editForm.ShowDialog() == DialogResult.OK)
+            {
+                newEdit.AddWithID((Item) editForm.ReturnedItem);
+                RefreshMainEditDataView(newEdit);
+                MainEditDataView["QChange", MainEditDataView.RowCount - 1].ReadOnly = true;
+            }
         }
-
         private void NewSearchBox_TextChanged(object sender, EventArgs e) => n1.searchInWarehouseDGV(MainEditDataView, NewSearchBox);
         private void OldSearchBox_TextChanged(object sender, EventArgs e) => n1.searchInWarehouseDGV(OldMainDataView,OldSearchBox);
-
         private void FinalizeFormButton_Click(object sender, EventArgs e)
         {
+            foreach (Item item in newEdit)
+            {
+                var value = MainEditDataView["QChange", MainEditDataView.RowCount - 1].Value;
+                if (value != null && value.ToString() != "")
+                try
+                {
+                    item.InvChangeNow(Convert.ToInt32(MainEditDataView["QChange", MainEditDataView.RowCount - 1].Value));
+
+                }
+                catch (InvalidDataException)
+                {
+                    MessageBox.Show("Неправильное количество позиции " + item.Name +
+                                    ". Попробуйте изменить значение и попробовать еще раз.");
+                    return;
+                }
+            }
             Close();
         }
     }

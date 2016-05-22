@@ -53,7 +53,7 @@
             this.MainEditDataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.MainEditDataView.Location = new System.Drawing.Point(12, 48);
             this.MainEditDataView.Name = "MainEditDataView";
-            this.MainEditDataView.Size = new System.Drawing.Size(855, 183);
+            this.MainEditDataView.Size = new System.Drawing.Size(929, 183);
             this.MainEditDataView.TabIndex = 0;
             // 
             // OldMainDataView
@@ -63,7 +63,7 @@
             this.OldMainDataView.Location = new System.Drawing.Point(12, 313);
             this.OldMainDataView.Name = "OldMainDataView";
             this.OldMainDataView.ReadOnly = true;
-            this.OldMainDataView.Size = new System.Drawing.Size(855, 183);
+            this.OldMainDataView.Size = new System.Drawing.Size(929, 183);
             this.OldMainDataView.TabIndex = 1;
             this.OldMainDataView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.OldMainDataView_CellMouseDoubleClick);
             // 
@@ -71,7 +71,7 @@
             // 
             this.OldSearchBox.Location = new System.Drawing.Point(12, 287);
             this.OldSearchBox.Name = "OldSearchBox";
-            this.OldSearchBox.Size = new System.Drawing.Size(855, 20);
+            this.OldSearchBox.Size = new System.Drawing.Size(929, 20);
             this.OldSearchBox.TabIndex = 2;
             this.OldSearchBox.TextChanged += new System.EventHandler(this.OldSearchBox_TextChanged);
             // 
@@ -79,7 +79,7 @@
             // 
             this.NewSearchBox.Location = new System.Drawing.Point(12, 22);
             this.NewSearchBox.Name = "NewSearchBox";
-            this.NewSearchBox.Size = new System.Drawing.Size(855, 20);
+            this.NewSearchBox.Size = new System.Drawing.Size(929, 20);
             this.NewSearchBox.TabIndex = 3;
             this.NewSearchBox.TextChanged += new System.EventHandler(this.NewSearchBox_TextChanged);
             // 
@@ -95,7 +95,7 @@
             // 
             // DeleteFromEditButton
             // 
-            this.DeleteFromEditButton.Location = new System.Drawing.Point(654, 237);
+            this.DeleteFromEditButton.Location = new System.Drawing.Point(728, 237);
             this.DeleteFromEditButton.Name = "DeleteFromEditButton";
             this.DeleteFromEditButton.Size = new System.Drawing.Size(213, 23);
             this.DeleteFromEditButton.TabIndex = 5;
@@ -142,7 +142,7 @@
             // 
             // CancelFormButton
             // 
-            this.CancelFormButton.Location = new System.Drawing.Point(786, 515);
+            this.CancelFormButton.Location = new System.Drawing.Point(860, 515);
             this.CancelFormButton.Name = "CancelFormButton";
             this.CancelFormButton.Size = new System.Drawing.Size(81, 23);
             this.CancelFormButton.TabIndex = 10;
@@ -164,7 +164,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(879, 545);
+            this.ClientSize = new System.Drawing.Size(953, 545);
             this.Controls.Add(this.CreateDocFile);
             this.Controls.Add(this.CancelFormButton);
             this.Controls.Add(this.FinalizeFormButton);
@@ -177,6 +177,8 @@
             this.Controls.Add(this.OldSearchBox);
             this.Controls.Add(this.OldMainDataView);
             this.Controls.Add(this.MainEditDataView);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "WarehouseEditForm";
             this.Text = "Регистрация отгрузки/завоза товара";
             this.Load += new System.EventHandler(this.WarehouseEditForm_Load);

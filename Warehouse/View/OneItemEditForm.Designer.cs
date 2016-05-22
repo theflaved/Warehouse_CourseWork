@@ -161,6 +161,7 @@
             // 
             // EditCancelButton
             // 
+            this.EditCancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.EditCancelButton.Location = new System.Drawing.Point(197, 208);
             this.EditCancelButton.Name = "EditCancelButton";
             this.EditCancelButton.Size = new System.Drawing.Size(149, 23);
@@ -171,8 +172,10 @@
             // 
             // OneItemEditForm
             // 
+            this.AcceptButton = this.EditAcceptButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.EditCancelButton;
             this.ClientSize = new System.Drawing.Size(355, 240);
             this.Controls.Add(this.EditCancelButton);
             this.Controls.Add(this.EditAcceptButton);

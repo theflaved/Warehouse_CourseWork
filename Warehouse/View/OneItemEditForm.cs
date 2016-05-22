@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -25,16 +26,25 @@ namespace Warehouse
                 MessageBox.Show("Вы действительно хотите отменить изменения?", "Предупреждение", MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
             {
+                this.DialogResult = DialogResult.Cancel;
                 Close();
             }
+        }
+
+        public bool ValidateForm()
+        {
+            Regex nums = new Regex(@"[0-9]");
+            bool expressionResult = (nums.IsMatch(QuanityTextBox.Text) &&
+                                     nums.IsMatch(PricePerUnitTextBox.Text) &&
+                                     nums.IsMatch(UnitsPerItemTextBox.Text));
+            return expressionResult;
         }
 
         private void EditAcceptButton_Click(object sender, EventArgs e)
         {
             try
             {
-                if (NameTextBox.Text == "" || QuanityTextBox.Text == "" || PricePerUnitTextBox.Text == "" ||
-                    UnitsPerItemTextBox.Text == "") throw new DataException();
+                if (!ValidateForm()) throw new DataException();
                 ADTUnits type;
                 switch (UnitTypeComboBox.Text)
                 {
@@ -55,16 +65,17 @@ namespace Warehouse
                             Convert.ToDouble(UnitsPerItemTextBox.Text));
                         break;
                 }
-                _innerItem = new Item(NameTextBox.Text, Convert.ToDouble(QuanityTextBox.Text),type);
+                _innerItem = new Item(NameTextBox.Text, Convert.ToDouble(QuanityTextBox.Text), type);
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
-            catch(DataException)
+            catch (DataException)
             {
-                MessageBox.Show("Не все поля заполнены, проверьте правильность ввода", "Уведомление",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                MessageBox.Show("Проверьте правильность ввода полей", "Ошибка", MessageBoxButtons.OK,
+                    MessageBoxIcon.Hand, MessageBoxDefaultButton.Button1);
             }
         }
-        
+
         private void UnitTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             //TODO: FIX THIS
@@ -72,14 +83,14 @@ namespace Warehouse
             switch (UnitTypeComboBox.Text)
             {
                 case "Вес":
-                    foreach (var item in new Weight(1,1,"кг.").FactDictionary.Keys)
+                    foreach (var item in new Weight(1, 1, "кг.").FactDictionary.Keys)
                     {
                         UnitFactorComboBox.Items.Add(item);
                         UnitFactorComboBox.Text = "кг.";
                     }
                     break;
                 case "Объем":
-                    foreach (var item in new Volume(1,1,"л.").FactDictionary.Keys)
+                    foreach (var item in new Volume(1, 1, "л.").FactDictionary.Keys)
                     {
                         UnitFactorComboBox.Items.Add(item);
                         UnitFactorComboBox.Text = "л.";
