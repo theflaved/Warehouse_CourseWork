@@ -1,14 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics.Eventing.Reader;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Warehouse
@@ -35,7 +27,7 @@ namespace Warehouse
         }
         private void WarehouseEditForm_Load(object sender, EventArgs e)
         {
-            newEdit = new Warehouse(((Warehouse)((Form1)Owner).MainDataViewSource)._idCounter);
+            newEdit = new Warehouse(((Warehouse)((Form1)Owner).MainDataViewSource).Count);
             MainEditDataView.DataSource = newEdit;
             foreach (DataGridViewColumn column in MainEditDataView.Columns)
             {
@@ -65,7 +57,6 @@ namespace Warehouse
                 Close();
             }
         }
-
         private void OldMainDataView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (OldMainDataView.SelectedCells != null && OldMainDataView.SelectedCells.Count != 0)
@@ -79,7 +70,7 @@ namespace Warehouse
                 }
                 else
                 {
-                    newEdit.Add((Item) OldMainDataView.Rows[rowIndex].DataBoundItem);
+                    newEdit.AddWithID((Item) OldMainDataView.Rows[rowIndex].DataBoundItem);
                     RefreshMainEditDataView(newEdit);
                 }
             }
@@ -128,7 +119,7 @@ namespace Warehouse
             OneItemEditForm editForm = new OneItemEditForm();
             if (editForm.ShowDialog() == DialogResult.OK)
             {
-                newEdit.AddWithID((Item) editForm.ReturnedItem);
+                newEdit.AddWithID((Item)editForm.ReturnedItem);
                 RefreshMainEditDataView(newEdit);
                 MainEditDataView["QChange", MainEditDataView.RowCount - 1].ReadOnly = true;
             }

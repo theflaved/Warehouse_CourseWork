@@ -33,6 +33,7 @@ namespace Warehouse
             MainDataViewSource = _dataCollection;
             MainPicDrawer.Image = Properties.Resources.buildings64;
             SetDataFormats(MainDataView);
+            _dataCollection.OnCollectionChange += () => RefreshDataView(MainDataView,_dataCollection);
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
@@ -44,8 +45,7 @@ namespace Warehouse
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                     MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                 {
-                    _dataCollection.Remove((Item) toDelete);
-                    RefreshDataView(MainDataView, _dataCollection);
+                    _dataCollection.Remove((Item)toDelete);
                 }
             }
             catch (NullReferenceException)
@@ -98,11 +98,11 @@ namespace Warehouse
                 if (dataIndex > _dataCollection.Count - 1) break;
                 current = _dataCollection[dataIndex];
                 row.Cells[1].Range.Text = current.Name;
-                row.Cells[2].Range.Text = current.Quanity.ToString();
+                row.Cells[2].Range.Text = current.Quanity.ToString() + " шт.";
                 row.Cells[3].Range.Text = current.Units.ToString();
-                row.Cells[4].Range.Text = current.CompletePriceSum.ToString();
+                row.Cells[4].Range.Text = current.CompletePriceSum.ToString() + " грн.";
                 row.Cells[5].Range.Text = current.LastEntry.ToString();
-                row.Cells[6].Range.Text = current.LastQuanityChange.ToString();
+                row.Cells[6].Range.Text = current.LastQuanityChange.ToString() + " шт.";
                 dataIndex++;
             }
             //Save the document
@@ -110,8 +110,8 @@ namespace Warehouse
             {
                 SaveFileDialog saveFile = new SaveFileDialog
                 {
-                    FileName = DateTime.Now.Date + ".docx",
-                    Filter = "All files (*.*)|*.*"
+                    FileName = @"Some.docx",
+                    Filter = "All files (*.docx)|*.docx"
                 };
                 if (saveFile.ShowDialog() == DialogResult.OK)
                 {
@@ -136,6 +136,7 @@ namespace Warehouse
         {
             searchInWarehouseDGV(MainDataView,SearchBox);
         }
+
         private void ReadFileButton_Click(object sender, EventArgs e)
         {
             IFormatter formatter = new BinaryFormatter();
@@ -168,6 +169,7 @@ namespace Warehouse
                 stream.Close();
             }
         }
+
         private void DeliverToWarehouseButton_Click(object sender, EventArgs e)
         {
             EditForm = new WarehouseEditForm();
@@ -176,8 +178,9 @@ namespace Warehouse
             {
                 _dataCollection.AddWithID(item,true);
             }
-            RebindDataView(MainDataView,_dataCollection);
+            //RebindDataView(MainDataView,_dataCollection);
         }
+
         //TODO: Fix this (Have no idea how)
         public void RefreshDataView(DataGridView view, object data)
         {
@@ -195,6 +198,7 @@ namespace Warehouse
             view.DataSource = data;
             SetDataFormats(view);
         }
+
         public void SetDataFormats(DataGridView DGV)
         {
             try
@@ -211,7 +215,6 @@ namespace Warehouse
 
         public void searchInWarehouseDGV(DataGridView view, TextBox box)
         {
-            string searchValue = box.Text;
             foreach (object row in view.Rows)
             {
                 if(((DataGridViewRow)row).Index == -1) continue;

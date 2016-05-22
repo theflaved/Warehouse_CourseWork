@@ -115,9 +115,9 @@
             this.VersionLabel.AutoSize = true;
             this.VersionLabel.Location = new System.Drawing.Point(82, 60);
             this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(120, 13);
+            this.VersionLabel.Size = new System.Drawing.Size(189, 13);
             this.VersionLabel.TabIndex = 14;
-            this.VersionLabel.Text = "Version: v0.3a (Alpha 3)";
+            this.VersionLabel.Text = "Version: v0.8b (Beta 8) RC1 Build1004";
             // 
             // label1
             // 

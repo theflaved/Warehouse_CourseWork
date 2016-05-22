@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
+using Warehouse.Annotations;
 
 /*
 TASK:
@@ -19,6 +21,8 @@ namespace Warehouse
         public int _idCounter { get; private set; }
         private List<Item> innerList;
         private ListSortDirection sortDirection;
+        public delegate void CollectionChanged();
+        public event CollectionChanged OnCollectionChange;
         [NonSerialized] private PropertyDescriptor sortProperty;
 
         Action<Warehouse, List<Item>>
@@ -131,7 +135,7 @@ namespace Warehouse
 
         public void AddWithID(Item item, bool replaceFlag = false)
         {
-            if (Object.ReferenceEquals(item.ID,null))
+            if (item.ID == null)
             {
                 item.ID = ++_idCounter;
                 Add(item);
@@ -141,10 +145,11 @@ namespace Warehouse
                 if (Contains(item) && replaceFlag) this[IndexOfID(item)] = item;
                 else
                 {
-                    item.ID = ++_idCounter;
+                    //item.ID = ++_idCounter;
                     Add(item);
                 }
             }
+            OnCollectionChange?.Invoke();
         }
 
         public object Clone()
@@ -155,16 +160,6 @@ namespace Warehouse
                 result.Add(item);
             }
             return result;
-        }
-
-        public void AddSetItem(Item replaceItem)
-        {
-            if (Contains(replaceItem))
-            {
-                this[IndexOf(replaceItem)] = replaceItem;
-                return;
-            }
-            Add(replaceItem);
         }
 
         public new bool Contains(Item item)
@@ -184,5 +179,12 @@ namespace Warehouse
             }
             return -1;
         }
+
+        public new void Remove(Item item)
+        {
+            base.Remove(item);
+            OnCollectionChange?.Invoke();
+        }
+
     }
 }
