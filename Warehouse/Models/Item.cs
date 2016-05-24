@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace Warehouse
 {
+    //Класс содержащий название,колличество и т.п. характеристики товара на складе
     [Serializable]
     class Item : IComparable<Item>, ICloneable
     {
@@ -20,7 +21,7 @@ namespace Warehouse
         public string Name { get; set; }
         [DisplayName("Колличество")]
         public double Quanity { get; set; }
-        [DisplayName("Стоимость за единицу")]
+        [DisplayName("Стоимость за единицу и колличество товара на упаковку")]
         public ADTUnits Units { get; set; }
         [DisplayName("Общая цена")]
         public double CompletePriceSum => Quanity * Units.Price;
@@ -39,6 +40,7 @@ namespace Warehouse
             ItemLog.Add(le);
         }
 
+        //Изменение колличества товара с пометкой по времени в данный момент
         public void InvChangeNow(double qChange)
         {
             ItemLog.Add(new LastEntry(qChange,DateTime.Now));
@@ -46,6 +48,7 @@ namespace Warehouse
             Quanity += qChange;
         }
 
+        //Если идентификатор товара не равен идентификатору другого товара, то объекты не равны
         public override bool Equals(object obj)
         {
             if (obj.GetType() == this.GetType())
@@ -55,8 +58,10 @@ namespace Warehouse
             return false;
         }
 
+        //Сравнение по колличеству
         public int CompareTo(Item other) => Quanity.CompareTo(other.Quanity);
 
+        //Конструктор клонирования объекта
         public object Clone()
         {
             Item result = new Item(Name, Quanity, Units);
@@ -65,6 +70,8 @@ namespace Warehouse
             return result;
         }
     }
+
+    // Класс который содержит информацию о последнем изменении товара
     [Serializable]
     class LastEntry
     {

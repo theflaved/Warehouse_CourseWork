@@ -11,15 +11,19 @@ using System.Windows.Forms;
 
 namespace Warehouse
 {
+    //Форма редактирования единичного товара
     public partial class OneItemEditForm : Form
     {
+        // Свойство для доступа к возвращаемому товару из вне
         public object ReturnedItem => _innerItem;
+        // Возвращаемый товар
         private Item _innerItem;
         public OneItemEditForm()
         {
             InitializeComponent();
         }
 
+        // Обработчик кнопки отмены
         private void EditCancelButton_Click(object sender, EventArgs e)
         {
             if (
@@ -31,15 +35,18 @@ namespace Warehouse
             }
         }
 
+        // Проверка формы
         public bool ValidateForm()
         {
-            Regex nums = new Regex(@"^\d+$");
-            bool expressionResult = (nums.IsMatch(QuanityTextBox.Text) &&
-                                     nums.IsMatch(PricePerUnitTextBox.Text) &&
-                                     nums.IsMatch(UnitsPerItemTextBox.Text));
+            Regex numsInt = new Regex(@"^\d+$");
+            Regex numsFloat = new Regex(@"\-?\d+(\.\d{0,})?");
+            bool expressionResult = (numsInt.IsMatch(QuanityTextBox.Text) &&
+                                     numsFloat.IsMatch(PricePerUnitTextBox.Text) &&
+                                     numsFloat.IsMatch(UnitsPerItemTextBox.Text));
             return expressionResult;
         }
 
+        // Принятие изменений
         private void EditAcceptButton_Click(object sender, EventArgs e)
         {
             try
@@ -76,9 +83,9 @@ namespace Warehouse
             }
         }
 
+        // События по изменению индекса
         private void UnitTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //TODO: FIX THIS
             UnitFactorComboBox.Items.Clear();
             switch (UnitTypeComboBox.Text)
             {
@@ -103,22 +110,35 @@ namespace Warehouse
             }
         }
 
+        // Метод для перехвата выбраной в таблице строки
         public void GetSelectedFromFatherForm(DataGridView DGV)
         {
             if (DGV.CurrentRow == null)
             {
                 MessageBox.Show("Ничего не выбрано");
+                throw new NoNullAllowedException();
             }
-            else
+            Item worker = (Item) DGV.CurrentRow.DataBoundItem;
+            NameTextBox.Text = worker.Name;
+            UnitsPerItemTextBox.Text = worker.Units.Quanity.ToString();
+            UnitFactorComboBox.Text = worker.Units.Factor;
+            PricePerUnitTextBox.Text = worker.Units.Price.ToString();
+            QuanityTextBox.Text = worker.Quanity.ToString();
+            QuanityTextBox.ReadOnly = true;
+            Type unitType = worker.Units.GetType();
+            switch (unitType.Name)
             {
-                Item worker = (Item) DGV.CurrentRow.DataBoundItem;
-                NameTextBox.Text = worker.Name;
-                UnitsPerItemTextBox.Text = worker.Units.Quanity.ToString();
-                UnitFactorComboBox.Text = worker.Units.Factor;
-                PricePerUnitTextBox.Text = worker.Units.Price.ToString();
-                QuanityTextBox.Text = worker.Quanity.ToString();
-                QuanityTextBox.ReadOnly = true;
+                case "Volume":
+                    UnitTypeComboBox.Text = "Объем";
+                    break;
+                case "Weight":
+                    UnitTypeComboBox.Text = "Вес";
+                    break;
+                default:
+                    UnitTypeComboBox.Text = "Количество";
+                    break;
             }
+            UnitFactorComboBox.Text = worker.Units.Factor;
         }
     }
 }

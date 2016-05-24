@@ -101,10 +101,6 @@ namespace Warehouse
                 }
                 MessageBox.Show(@"Ведомость создана");
             }
-            else
-            {
-                throw new Exception();
-            }
         }
 
         //Обработчик поля поиска, вызывается при изменении текста
@@ -213,7 +209,7 @@ namespace Warehouse
             }
         }
 
-        //Вызов окна о "программе"
+        //Вызов окна "о программе"
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutForm about = new AboutForm();

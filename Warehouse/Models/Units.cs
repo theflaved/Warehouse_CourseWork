@@ -3,12 +3,16 @@ using System.Collections.Generic;
 
 namespace Warehouse
 {
-    //TODO: Clean and structurize code
+    //Интерфейс содержащий информацию о единицах измерения и цене единицы товара и класс, который реализует его 
     public interface INumInSI
     {
+        //Колличество
         double Quanity { get; set; }
+        //Приставка которая сигнализует о размерности
         string Factor { get; set; }
+        //Словарь приставок и их множителей
         Dictionary<string, double> FactDictionary { get; set; }
+        //Метод возвращающий номер в единцах измерения СИ
         double GetSINumber();
     }
     [Serializable]
@@ -45,6 +49,7 @@ namespace Warehouse
             return Price.CompareTo(other.Price);
         }
     }
+    //Вес
     [Serializable]
     sealed class Weight : ADTUnits
     {
@@ -64,6 +69,7 @@ namespace Warehouse
             if (!FactDictionary.ContainsKey(Factor)) throw new ArgumentException("Invalid factor");
         }
     }
+    //Объем
     [Serializable]
     sealed class Volume : ADTUnits
     {
@@ -74,8 +80,6 @@ namespace Warehouse
             Factor = factor;
             Price = price;
 
-            FactDictionary.Add("т.", 1000); //Тонна
-            FactDictionary.Add("ц.", 100); //Центнер
             FactDictionary.Add("л.", 1); //Литр
             FactDictionary.Add("мл.", 0.001); //Грамм
             FactDictionary.Add("мг.", 0.000001); //Миллиграмм
@@ -83,6 +87,7 @@ namespace Warehouse
             if (!FactDictionary.ContainsKey(Factor)) throw new ArgumentException("Invalid factor");
         }
     }
+    //Количество
     [Serializable]
     sealed class UnitsOnly : ADTUnits
     {

@@ -149,13 +149,7 @@ namespace Warehouse
             get { return sortProperty; }
         }
 
-        //TODO: Delete this
-        //protected override void OnListChanged(ListChangedEventArgs e)
-        //{
-        //    innerList = base.Items.ToList();
-        //}
-
-        //Метод добавления/замены по уникальному идентификатору
+        //Добавление с заменой или без по уникальному идентификатору
         public void AddWithID(Item item, bool replaceFlag = false)
         {
             if (item.ID == null)

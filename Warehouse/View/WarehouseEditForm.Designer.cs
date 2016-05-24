@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WarehouseEditForm));
             this.MainEditDataView = new System.Windows.Forms.DataGridView();
             this.OldMainDataView = new System.Windows.Forms.DataGridView();
             this.OldSearchBox = new System.Windows.Forms.TextBox();
@@ -186,6 +187,7 @@
             this.Controls.Add(this.OldSearchBox);
             this.Controls.Add(this.OldMainDataView);
             this.Controls.Add(this.MainEditDataView);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "WarehouseEditForm";

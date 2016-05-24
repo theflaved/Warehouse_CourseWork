@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Windows.Forms;
 
@@ -57,7 +58,7 @@ namespace Warehouse
             MainEditDataView.Columns.Insert(MainEditDataView.ColumnCount, bc);
         }
 
-
+        //Кнопка отмены редактирования
         private void CancelFormButton_Click(object sender, EventArgs e)
         {
             if (
@@ -69,6 +70,8 @@ namespace Warehouse
                 Close();
             }
         }
+
+        //Добавление в коллекцию редактирования из основной коллекции
         private void OldMainDataView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (OldMainDataView.SelectedCells != null && OldMainDataView.SelectedCells.Count != 0)
@@ -87,6 +90,8 @@ namespace Warehouse
                 }
             }
         }
+
+        //Обновление основной таблицы редактирования
         private void RefreshMainEditDataView(object source)
         {
             List<object> temp = new List<object>();
@@ -106,6 +111,8 @@ namespace Warehouse
                 MainEditDataView["QChange", i].ReadOnly = temp2[i];
             }
         }
+
+        //Кнопка удаления из окна редактирования
         private void DeleteFromEditButton_Click(object sender, EventArgs e)
         {
             try
@@ -136,6 +143,8 @@ namespace Warehouse
                 MainEditDataView["QChange", MainEditDataView.RowCount - 1].ReadOnly = true;
             }
         }
+
+        //Обработчики событий изменения текста в строках поиска
         private void NewSearchBox_TextChanged(object sender, EventArgs e) => n1.searchInWarehouseDGV(MainEditDataView, NewSearchBox);
         private void OldSearchBox_TextChanged(object sender, EventArgs e) => n1.searchInWarehouseDGV(OldMainDataView,OldSearchBox);
         private void FinalizeFormButton_Click(object sender, EventArgs e)
@@ -160,10 +169,18 @@ namespace Warehouse
             Close();
         }
 
+        //Редактирование одного элемента
         private void EditOnceButton_Click(object sender, EventArgs e)
         {
             OneItemEditForm dialog = new OneItemEditForm();
-            dialog.GetSelectedFromFatherForm(MainEditDataView);
+            try
+            {
+                dialog.GetSelectedFromFatherForm(MainEditDataView);
+            }
+            catch (NoNullAllowedException)
+            {
+                return;
+            }
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 int? tmp = ((Item) MainEditDataView.CurrentRow.DataBoundItem).ID;

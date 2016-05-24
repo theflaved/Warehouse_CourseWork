@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OneItemEditForm));
             this.ItemNameLabel = new System.Windows.Forms.Label();
             this.QuanityLabel = new System.Windows.Forms.Label();
             this.PricePerItemLabel = new System.Windows.Forms.Label();
@@ -191,6 +192,7 @@
             this.Controls.Add(this.PricePerItemLabel);
             this.Controls.Add(this.QuanityLabel);
             this.Controls.Add(this.ItemNameLabel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "OneItemEditForm";
             this.Text = "Редактирование товара";
             this.ResumeLayout(false);
