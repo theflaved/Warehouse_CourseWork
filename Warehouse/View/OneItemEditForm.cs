@@ -33,7 +33,7 @@ namespace Warehouse
 
         public bool ValidateForm()
         {
-            Regex nums = new Regex(@"[0-9]");
+            Regex nums = new Regex(@"^\d+$");
             bool expressionResult = (nums.IsMatch(QuanityTextBox.Text) &&
                                      nums.IsMatch(PricePerUnitTextBox.Text) &&
                                      nums.IsMatch(UnitsPerItemTextBox.Text));
@@ -100,6 +100,24 @@ namespace Warehouse
                     UnitFactorComboBox.Items.Add("шт.");
                     UnitFactorComboBox.Text = "шт.";
                     break;
+            }
+        }
+
+        public void GetSelectedFromFatherForm(DataGridView DGV)
+        {
+            if (DGV.CurrentRow == null)
+            {
+                MessageBox.Show("Ничего не выбрано");
+            }
+            else
+            {
+                Item worker = (Item) DGV.CurrentRow.DataBoundItem;
+                NameTextBox.Text = worker.Name;
+                UnitsPerItemTextBox.Text = worker.Units.Quanity.ToString();
+                UnitFactorComboBox.Text = worker.Units.Factor;
+                PricePerUnitTextBox.Text = worker.Units.Price.ToString();
+                QuanityTextBox.Text = worker.Quanity.ToString();
+                QuanityTextBox.ReadOnly = true;
             }
         }
     }

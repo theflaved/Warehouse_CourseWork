@@ -8,9 +8,13 @@ namespace Warehouse
     //TODO: Refactor form class
     public partial class WarehouseEditForm : Form
     {
+        //Ссылка на основную форму
         private Form1 n1;
+        //Коллекция которая содержит изменяемые элементы
         private Warehouse newEdit;
+        //Реализация внешнего доступа к изменяемой коллекции
         public object outerEdit => newEdit;
+        //Отключение кнопки "Закрыть"
         private const int CP_NOCLOSE_BUTTON = 0x200;
         protected override CreateParams CreateParams
         {
@@ -25,6 +29,8 @@ namespace Warehouse
         {
             InitializeComponent();
         }
+
+        //Действия которые необходимо совершить для загрузки и полноразмерной функциональности
         private void WarehouseEditForm_Load(object sender, EventArgs e)
         {
             newEdit = new Warehouse(((Warehouse)((Form1)Owner).MainDataViewSource).Count);
@@ -38,7 +44,10 @@ namespace Warehouse
             foreach (DataGridViewColumn column in MainEditDataView.Columns) column.ReadOnly = true;
             CreateUnboundTextBoxColumn();
             n1.SetDataFormats(OldMainDataView);
+            newEdit.OnCollectionChange += () => RefreshMainEditDataView(newEdit);
         }
+
+        //Создание не привязанной к данным колонки
         private void CreateUnboundTextBoxColumn()
         {
             DataGridViewTextBoxColumn bc = new DataGridViewTextBoxColumn();
@@ -47,6 +56,8 @@ namespace Warehouse
             bc.ReadOnly = false;
             MainEditDataView.Columns.Insert(MainEditDataView.ColumnCount, bc);
         }
+
+
         private void CancelFormButton_Click(object sender, EventArgs e)
         {
             if (
@@ -54,6 +65,7 @@ namespace Warehouse
                     MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1) ==
                 DialogResult.Yes)
             {
+                DialogResult = DialogResult.Cancel;
                 Close();
             }
         }
@@ -144,7 +156,20 @@ namespace Warehouse
                     return;
                 }
             }
+            DialogResult = DialogResult.OK;
             Close();
+        }
+
+        private void EditOnceButton_Click(object sender, EventArgs e)
+        {
+            OneItemEditForm dialog = new OneItemEditForm();
+            dialog.GetSelectedFromFatherForm(MainEditDataView);
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                int? tmp = ((Item) MainEditDataView.CurrentRow.DataBoundItem).ID;
+                ((Item) dialog.ReturnedItem).ID = tmp;
+                newEdit.AddWithID((Item)dialog.ReturnedItem,true);
+            }
         }
     }
 }

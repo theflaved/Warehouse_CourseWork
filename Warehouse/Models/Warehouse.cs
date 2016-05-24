@@ -18,16 +18,23 @@ namespace Warehouse
     [Serializable]
     class Warehouse : BindingList<Item>, ICloneable
     {
+        //Счетчик для уникальных идентификаторов в коллекции
         public int _idCounter { get; private set; }
+        //Оригинальный (не сортированый)
         private List<Item> innerList;
+        //Направление сортировки
         private ListSortDirection sortDirection;
+        //Событие изменения коллекции
         public delegate void CollectionChanged();
         public event CollectionChanged OnCollectionChange;
+        //Поле, которое описывает название поля по которому в данный момент осуществляется сортировка
         [NonSerialized] private PropertyDescriptor sortProperty;
 
+        //Сброс режима сортировки
         Action<Warehouse, List<Item>>
             populateBaseList = (a, b) => a.ResetItems(b);
 
+        //Словарь методов для сортировки списка, при отсутствии в нем методя для подходящего свойства создается новый и сохраняется в этом словаре
         private static Dictionary<string, Func<List<Item>, IEnumerable<Item>>>
             cachedOrderByExpressions = new Dictionary<string, Func<List<Item>, IEnumerable<Item>>>();
 
@@ -54,6 +61,7 @@ namespace Warehouse
             _idCounter = idCounter;
         }
 
+        //Имплементация методов для сортируемого списка типа BindingList
         protected override void ApplySortCore(PropertyDescriptor prop,
             ListSortDirection direction)
         {
@@ -76,6 +84,8 @@ namespace Warehouse
                 ? ListSortDirection.Descending
                 : ListSortDirection.Ascending;
         }
+
+        //Создание метода сортировки для определенного поля
         private void CreateOrderByMethod(PropertyDescriptor prop,
             string orderByMethodName, string cacheKey)
         {
@@ -102,10 +112,14 @@ namespace Warehouse
 
             cachedOrderByExpressions.Add(cacheKey, orderByExpression.Compile());
         }
+
+        //Сброс сортировки
         protected override void RemoveSortCore()
         {
             ResetItems(innerList);
         }
+
+        //Сброс сортировки с заменой
         private void ResetItems(List<Item> items)
         {
 
@@ -116,23 +130,32 @@ namespace Warehouse
                 base.InsertItem(i, items[i]);
             }
         }
+
+        //Сигнализация того, что список поддерживает сортировку
         protected override bool SupportsSortingCore
         {
             get { return true; }
         }
+
+        //Направление сортировки
         protected override ListSortDirection SortDirectionCore
         {
             get { return sortDirection; }
         }
+
+        //Свойство по которому в данный момент осуществляется сортировка
         protected override PropertyDescriptor SortPropertyCore
         {
             get { return sortProperty; }
         }
-        protected override void OnListChanged(ListChangedEventArgs e)
-        {
-            innerList = base.Items.ToList();
-        }
 
+        //TODO: Delete this
+        //protected override void OnListChanged(ListChangedEventArgs e)
+        //{
+        //    innerList = base.Items.ToList();
+        //}
+
+        //Метод добавления/замены по уникальному идентификатору
         public void AddWithID(Item item, bool replaceFlag = false)
         {
             if (item.ID == null)
@@ -152,6 +175,7 @@ namespace Warehouse
             OnCollectionChange?.Invoke();
         }
 
+        //Глубокое копирование списка
         public object Clone()
         {
             Warehouse result = new Warehouse();
@@ -162,6 +186,7 @@ namespace Warehouse
             return result;
         }
 
+        //Метод для проверки наличия определенного элемента в списке
         public new bool Contains(Item item)
         {
             foreach (Item itemCol in this)
@@ -171,6 +196,7 @@ namespace Warehouse
             return false;
         }
 
+        //Метод для поиска индекса определнного элемента в списке
         public int IndexOfID(Item item)
         {
             for (int i = 0; i < Count; i++)
@@ -180,6 +206,7 @@ namespace Warehouse
             return -1;
         }
 
+        //Метод удаления из списка и дальнейшая сигнализация о изменении в списке
         public new void Remove(Item item)
         {
             base.Remove(item);

@@ -2,13 +2,17 @@
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Word;
+using Warehouse.View;
 
 namespace Warehouse
 {
+    //Главная форма приложения
     public partial class Form1 : Form
     {
+        //Внешняя форма для регистрации отгрузки/поступления товара
         private WarehouseEditForm EditForm;
         public DataGridView OuterAccessToDBView => MainDataView;
 
@@ -26,16 +30,17 @@ namespace Warehouse
             InitializeComponent();
         }
 
+        //Действия выполняемые при вызове формы
         private void Form1_Load(object sender, EventArgs e)
         {
             Warehouse n = new Warehouse();
             _dataCollection = n;
             MainDataViewSource = _dataCollection;
-            MainPicDrawer.Image = Properties.Resources.buildings64;
             SetDataFormats(MainDataView);
-            _dataCollection.OnCollectionChange += () => RefreshDataView(MainDataView,_dataCollection);
+            _dataCollection.OnCollectionChange += () => RebindDataView(MainDataView,_dataCollection);
         }
 
+        //Обработчки нажатия на кнопку удаления из базы данных склада
         private void DeleteButton_Click(object sender, EventArgs e)
         {
             try
@@ -55,88 +60,57 @@ namespace Warehouse
             }
         }
 
+        //Вывод ведомости в HTML файл
         private void PrintDBToDocButton_Click(object sender, EventArgs e)
         {
-            if (_dataCollection.Count == 0)
+            SaveFileDialog saveFile = new SaveFileDialog
             {
-                MessageBox.Show("База данных не загружена, либо не создана!", "Ошибка", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                return;
-            }
-            Microsoft.Office.Interop.Word.Application winword = new Microsoft.Office.Interop.Word.Application();
-            winword.ShowAnimation = false;
-            winword.Visible = false;
-            object missing = System.Reflection.Missing.Value;
-            Document document = winword.Documents.Add(ref missing, ref missing,
-                ref missing, ref missing);
-
-            document.Content.SetRange(0, 0);
-
-            //Add paragraph with Heading 1 style
-            Paragraph para1 = document.Content.Paragraphs.Add(ref missing);
-            object styleHeading1 = "Heading 1";
-            para1.Range.set_Style(ref styleHeading1);
-            para1.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
-            para1.Range.Text = "Отчет о складе " + DateTime.Now;
-            para1.Range.InsertParagraphAfter();
-
-            Table firstTable = document.Tables.Add(para1.Range, _dataCollection.Count + 1, 6, ref missing, ref missing);
-
-            //firstTable.set_Style(ref);
-            firstTable.Borders.Enable = 1;
-            firstTable.Rows[1].Cells[1].Range.Text = "Название";
-            firstTable.Rows[1].Cells[2].Range.Text = "Количество";
-            firstTable.Rows[1].Cells[3].Range.Text = "Цена за единицу";
-            firstTable.Rows[1].Cells[4].Range.Text = "Общая цена товара";
-            firstTable.Rows[1].Cells[5].Range.Text = "Дата последнего изменения";
-            firstTable.Rows[1].Cells[6].Range.Text = "Последнее изменение";
-            int dataIndex = 0;
-            Item current;
-            foreach (Row row in firstTable.Rows)
+                FileName = @"report.htm",
+                Filter = "All files (*.htm)|*.htm"
+            };
+            if (saveFile.ShowDialog() == DialogResult.OK)
             {
-                if(row.Index == 1) continue;;
-                if (dataIndex > _dataCollection.Count - 1) break;
-                current = _dataCollection[dataIndex];
-                row.Cells[1].Range.Text = current.Name;
-                row.Cells[2].Range.Text = current.Quanity.ToString() + " шт.";
-                row.Cells[3].Range.Text = current.Units.ToString();
-                row.Cells[4].Range.Text = current.CompletePriceSum.ToString() + " грн.";
-                row.Cells[5].Range.Text = current.LastEntry.ToString();
-                row.Cells[6].Range.Text = current.LastQuanityChange.ToString() + " шт.";
-                dataIndex++;
-            }
-            //Save the document
-            try
-            {
-                SaveFileDialog saveFile = new SaveFileDialog
+                object path = saveFile.FileName;
+                using (FileStream fs = new FileStream(path.ToString(), FileMode.Create))
                 {
-                    FileName = @"Some.docx",
-                    Filter = "All files (*.docx)|*.docx"
-                };
-                if (saveFile.ShowDialog() == DialogResult.OK)
-                {
-                    object path = saveFile.FileName;
-                    document.SaveAs2(ref path);
-                    document.Close(ref missing, ref missing, ref missing);
-                    winword.Quit(ref missing, ref missing, ref missing);
-                    MessageBox.Show(@"Ведомость создана");
+                    using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8))
+                    {
+                        writer.WriteLine("<h1 style=\"text-align: center\">Ведомость от " + DateTime.Now + "</h1>");
+                        writer.Write("<table cellspacing=\"2\" border=\"1\" cellpadding=\"5\" style=\"text-align: center\">");
+                        writer.WriteLine("<tr style=\"background-color: cyan\"><td>ID (Уникальный идентификатор товара на складе)</td>" +
+                                     "<td>Название</td>" +
+                                     "<td>Количество</td>" +
+                                     "<td>Цена за единицу товара в упаковке</td>" +
+                                     "<td>Общая цена товара на складе</td>" +
+                                     "<td>Дата последнего изменения</td>" +
+                                     "<td>Последнее изменение в количестве</td></tr>");
+                        foreach (Item item in _dataCollection)
+                        {
+                            writer.WriteLine("<tr>" +
+                                         "<td>№"+ item.ID + "</td>" +
+                                         "<td>" + item.Name + "</td>" +
+                                         "<td>" + item.Quanity + " шт. </td>" +
+                                         "<td>" + item.Units.ToString() + "</td>" +
+                                         "<td>" + item.CompletePriceSum + "грн. </td>" +
+                                         "<td>" + item.LastEntry + "</td>" +
+                                         "<td>" + item.LastQuanityChange + " шт. </td>" +
+                                         "</tr>");
+                        }
+                        writer.Write("</table>");
+                    }
                 }
-                else
-                {
-                    throw new Exception();
-                }
+                MessageBox.Show(@"Ведомость создана");
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(@"При формировании ведомости произошла ошибка. Повторите попытку еще раз.");
+                throw new Exception();
             }
         }
 
-        private void SearchBox_TextChanged(object sender, EventArgs e)
-        {
-            searchInWarehouseDGV(MainDataView,SearchBox);
-        }
+        //Обработчик поля поиска, вызывается при изменении текста
+        private void SearchBox_TextChanged(object sender, EventArgs e) => searchInWarehouseDGV(MainDataView,SearchBox);
 
+        //Открытие файлы (Десериализация)
         private void ReadFileButton_Click(object sender, EventArgs e)
         {
             IFormatter formatter = new BinaryFormatter();
@@ -151,9 +125,11 @@ namespace Warehouse
                 _dataCollection = (Warehouse)formatter.Deserialize(stream);
                 stream.Close();
                 RebindDataView(MainDataView, _dataCollection);
+                _dataCollection.OnCollectionChange += () => RebindDataView(MainDataView, _dataCollection);
             }
         }
 
+        //Сохранение файла (Сериализация)
         private void WriteFileButton_Click(object sender, EventArgs e)
         {
             IFormatter formatter = new BinaryFormatter();
@@ -164,24 +140,29 @@ namespace Warehouse
             };
             if (saveFile.ShowDialog() == DialogResult.OK)
             {
-                Stream stream = new FileStream(saveFile.FileName, FileMode.Create, FileAccess.Write, FileShare.None);
-                formatter.Serialize(stream, _dataCollection);
-                stream.Close();
+                using (
+                    FileStream stream = new FileStream(saveFile.FileName, FileMode.Create, FileAccess.Write, FileShare.None)
+                    )
+                {
+                    formatter.Serialize(stream, new Warehouse(_dataCollection, _dataCollection._idCounter));
+                    stream.Close();
+                }
             }
         }
 
+        //Вызов формы отгрузки/прибытия товара и дальнейшее добавление/замена товаров в главной коллекции
         private void DeliverToWarehouseButton_Click(object sender, EventArgs e)
         {
             EditForm = new WarehouseEditForm();
             EditForm.ShowDialog(this);
-            foreach (Item item in (Warehouse)EditForm.outerEdit)
-            {
-                _dataCollection.AddWithID(item,true);
-            }
-            //RebindDataView(MainDataView,_dataCollection);
+            if(EditForm.DialogResult == DialogResult.OK)
+                foreach (Item item in (Warehouse) EditForm.outerEdit)
+                {
+                    _dataCollection.AddWithID(item, true);
+                }
         }
 
-        //TODO: Fix this (Have no idea how)
+        //Обновления таблицы отображения
         public void RefreshDataView(DataGridView view, object data)
         {
             CurrencyManager cm = (CurrencyManager)(view.BindingContext[data]);
@@ -192,6 +173,7 @@ namespace Warehouse
             SetDataFormats(view);
         }
 
+        //Аналогично предыдущему, но другим способом
         public void RebindDataView(DataGridView view, object data)
         {
             view.DataSource = null;
@@ -199,6 +181,7 @@ namespace Warehouse
             SetDataFormats(view);
         }
 
+        //Установка форматов данных для отображения
         public void SetDataFormats(DataGridView DGV)
         {
             try
@@ -213,6 +196,7 @@ namespace Warehouse
             }
         }
 
+        //Основной метод поиска в таблице отображения
         public void searchInWarehouseDGV(DataGridView view, TextBox box)
         {
             foreach (object row in view.Rows)
@@ -227,6 +211,13 @@ namespace Warehouse
                 if (!((Item)view.Rows[i].DataBoundItem).Name.ToLower().Contains(box.Text.ToLower()))
                     view.Rows[i].Visible = false;
             }
+        }
+
+        //Вызов окна о "программе"
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutForm about = new AboutForm();
+            about.ShowDialog();
         }
     }
 }

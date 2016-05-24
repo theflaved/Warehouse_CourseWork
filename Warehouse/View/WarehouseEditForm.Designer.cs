@@ -28,9 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.MainEditDataView = new System.Windows.Forms.DataGridView();
-            this.warehouseBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.OldMainDataView = new System.Windows.Forms.DataGridView();
             this.OldSearchBox = new System.Windows.Forms.TextBox();
             this.NewSearchBox = new System.Windows.Forms.TextBox();
@@ -42,8 +40,8 @@
             this.FinalizeFormButton = new System.Windows.Forms.Button();
             this.CancelFormButton = new System.Windows.Forms.Button();
             this.CreateDocFile = new System.Windows.Forms.CheckBox();
+            this.EditOnceButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainEditDataView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.warehouseBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OldMainDataView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -160,11 +158,22 @@
             this.CreateDocFile.Text = "Создать накладную";
             this.CreateDocFile.UseVisualStyleBackColor = true;
             // 
+            // EditOnceButton
+            // 
+            this.EditOnceButton.Location = new System.Drawing.Point(576, 237);
+            this.EditOnceButton.Name = "EditOnceButton";
+            this.EditOnceButton.Size = new System.Drawing.Size(146, 23);
+            this.EditOnceButton.TabIndex = 12;
+            this.EditOnceButton.Text = "Редактировать запись";
+            this.EditOnceButton.UseVisualStyleBackColor = true;
+            this.EditOnceButton.Click += new System.EventHandler(this.EditOnceButton_Click);
+            // 
             // WarehouseEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(953, 545);
+            this.Controls.Add(this.EditOnceButton);
             this.Controls.Add(this.CreateDocFile);
             this.Controls.Add(this.CancelFormButton);
             this.Controls.Add(this.FinalizeFormButton);
@@ -183,7 +192,6 @@
             this.Text = "Регистрация отгрузки/завоза товара";
             this.Load += new System.EventHandler(this.WarehouseEditForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.MainEditDataView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.warehouseBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.OldMainDataView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -204,6 +212,6 @@
         private System.Windows.Forms.Button FinalizeFormButton;
         private System.Windows.Forms.Button CancelFormButton;
         private System.Windows.Forms.CheckBox CreateDocFile;
-        private System.Windows.Forms.BindingSource warehouseBindingSource;
+        private System.Windows.Forms.Button EditOnceButton;
     }
 }
