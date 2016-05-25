@@ -144,6 +144,7 @@
     </Compile>
     <None Include="Warehouse.datasource" />
     <None Include="Warehouse_TemporaryKey.pfx" />
+    <None Include="Пояснювальна записка Торбієвський.docx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

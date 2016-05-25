@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Warehouse
 {
-    //TODO: Refactor form class
     public partial class WarehouseEditForm : Form
     {
         //Ссылка на основную форму
@@ -186,6 +186,15 @@ namespace Warehouse
                 int? tmp = ((Item) MainEditDataView.CurrentRow.DataBoundItem).ID;
                 ((Item) dialog.ReturnedItem).ID = tmp;
                 newEdit.AddWithID((Item)dialog.ReturnedItem,true);
+            }
+        }
+
+        private void MainEditDataView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if (!(new Regex(@"^\d+$")).IsMatch(MainEditDataView[e.ColumnIndex, e.RowIndex].Value.ToString()))
+            {
+                MainEditDataView[e.ColumnIndex, e.RowIndex].Value = "";
+                MessageBox.Show("Вы ввели неверное значение, повторите попытку");
             }
         }
     }

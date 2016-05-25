@@ -53,6 +53,7 @@
             this.MainEditDataView.Name = "MainEditDataView";
             this.MainEditDataView.Size = new System.Drawing.Size(929, 183);
             this.MainEditDataView.TabIndex = 0;
+            this.MainEditDataView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.MainEditDataView_CellEndEdit);
             // 
             // OldMainDataView
             // 
