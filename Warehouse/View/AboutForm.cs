@@ -23,7 +23,7 @@ namespace Warehouse.View
             MainPicDrawer.Image = Resources.buildings64;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
             Close();
         }

@@ -10,7 +10,7 @@ namespace Warehouse
     public partial class WarehouseEditForm : Form
     {
         //Ссылка на основную форму
-        private Form1 n1;
+        private MainForm n1;
         //Коллекция которая содержит изменяемые элементы
         private Warehouse newEdit;
         //Реализация внешнего доступа к изменяемой коллекции
@@ -34,14 +34,14 @@ namespace Warehouse
         //Действия которые необходимо совершить для загрузки и полноразмерной функциональности
         private void WarehouseEditForm_Load(object sender, EventArgs e)
         {
-            newEdit = new Warehouse(((Warehouse)((Form1)Owner).MainDataViewSource).Count);
+            newEdit = new Warehouse(((Warehouse)((MainForm)Owner).MainDataViewSource).Count);
             MainEditDataView.DataSource = newEdit;
             foreach (DataGridViewColumn column in MainEditDataView.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
-            n1 = new Form1();
-            OldMainDataView.DataSource = ((Form1)Owner).MainDataViewSource;
+            n1 = new MainForm();
+            OldMainDataView.DataSource = ((MainForm)Owner).MainDataViewSource;
             foreach (DataGridViewColumn column in MainEditDataView.Columns) column.ReadOnly = true;
             CreateUnboundTextBoxColumn();
             n1.SetDataFormats(OldMainDataView);

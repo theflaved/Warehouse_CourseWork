@@ -35,12 +35,11 @@
             this.NewSearchBox = new System.Windows.Forms.TextBox();
             this.AddToEditButton = new System.Windows.Forms.Button();
             this.DeleteFromEditButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.EditLabel = new System.Windows.Forms.Label();
+            this.BDLabel = new System.Windows.Forms.Label();
+            this.NoteLabel = new System.Windows.Forms.Label();
             this.FinalizeFormButton = new System.Windows.Forms.Button();
             this.CancelFormButton = new System.Windows.Forms.Button();
-            this.CreateDocFile = new System.Windows.Forms.CheckBox();
             this.EditOnceButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainEditDataView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OldMainDataView)).BeginInit();
@@ -102,32 +101,32 @@
             this.DeleteFromEditButton.UseVisualStyleBackColor = true;
             this.DeleteFromEditButton.Click += new System.EventHandler(this.DeleteFromEditButton_Click);
             // 
-            // label1
+            // EditLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(400, 6);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(107, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Изменяемый товар";
+            this.EditLabel.AutoSize = true;
+            this.EditLabel.Location = new System.Drawing.Point(400, 6);
+            this.EditLabel.Name = "EditLabel";
+            this.EditLabel.Size = new System.Drawing.Size(107, 13);
+            this.EditLabel.TabIndex = 6;
+            this.EditLabel.Text = "Изменяемый товар";
             // 
-            // label2
+            // BDLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(400, 271);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(120, 13);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "Основная БД товаров";
+            this.BDLabel.AutoSize = true;
+            this.BDLabel.Location = new System.Drawing.Point(400, 271);
+            this.BDLabel.Name = "BDLabel";
+            this.BDLabel.Size = new System.Drawing.Size(120, 13);
+            this.BDLabel.TabIndex = 7;
+            this.BDLabel.Text = "Основная БД товаров";
             // 
-            // label3
+            // NoteLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 499);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(415, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Нажмите два раза на товар чтобы создать запись о его прибытии или отгрузке";
+            this.NoteLabel.AutoSize = true;
+            this.NoteLabel.Location = new System.Drawing.Point(9, 499);
+            this.NoteLabel.Name = "NoteLabel";
+            this.NoteLabel.Size = new System.Drawing.Size(415, 13);
+            this.NoteLabel.TabIndex = 8;
+            this.NoteLabel.Text = "Нажмите два раза на товар чтобы создать запись о его прибытии или отгрузке";
             // 
             // FinalizeFormButton
             // 
@@ -149,16 +148,6 @@
             this.CancelFormButton.UseVisualStyleBackColor = true;
             this.CancelFormButton.Click += new System.EventHandler(this.CancelFormButton_Click);
             // 
-            // CreateDocFile
-            // 
-            this.CreateDocFile.AutoSize = true;
-            this.CreateDocFile.Location = new System.Drawing.Point(94, 519);
-            this.CreateDocFile.Name = "CreateDocFile";
-            this.CreateDocFile.Size = new System.Drawing.Size(126, 17);
-            this.CreateDocFile.TabIndex = 11;
-            this.CreateDocFile.Text = "Создать накладную";
-            this.CreateDocFile.UseVisualStyleBackColor = true;
-            // 
             // EditOnceButton
             // 
             this.EditOnceButton.Location = new System.Drawing.Point(576, 237);
@@ -175,12 +164,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(953, 545);
             this.Controls.Add(this.EditOnceButton);
-            this.Controls.Add(this.CreateDocFile);
             this.Controls.Add(this.CancelFormButton);
             this.Controls.Add(this.FinalizeFormButton);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.NoteLabel);
+            this.Controls.Add(this.BDLabel);
+            this.Controls.Add(this.EditLabel);
             this.Controls.Add(this.DeleteFromEditButton);
             this.Controls.Add(this.AddToEditButton);
             this.Controls.Add(this.NewSearchBox);
@@ -208,12 +196,11 @@
         private System.Windows.Forms.TextBox NewSearchBox;
         private System.Windows.Forms.Button AddToEditButton;
         private System.Windows.Forms.Button DeleteFromEditButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label EditLabel;
+        private System.Windows.Forms.Label BDLabel;
+        private System.Windows.Forms.Label NoteLabel;
         private System.Windows.Forms.Button FinalizeFormButton;
         private System.Windows.Forms.Button CancelFormButton;
-        private System.Windows.Forms.CheckBox CreateDocFile;
         private System.Windows.Forms.Button EditOnceButton;
     }
 }

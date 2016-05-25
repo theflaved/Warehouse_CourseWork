@@ -29,22 +29,22 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
-            this.label1 = new System.Windows.Forms.Label();
+            this.AuthorLabel = new System.Windows.Forms.Label();
             this.VersionLabel = new System.Windows.Forms.Label();
             this.NameLabel = new System.Windows.Forms.Label();
             this.MainPicDrawer = new System.Windows.Forms.PictureBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.CloseButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainPicDrawer)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // AuthorLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(82, 52);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(210, 13);
-            this.label1.TabIndex = 19;
-            this.label1.Text = "Автор: Александр Торбиевский (c) 2016";
+            this.AuthorLabel.AutoSize = true;
+            this.AuthorLabel.Location = new System.Drawing.Point(82, 52);
+            this.AuthorLabel.Name = "AuthorLabel";
+            this.AuthorLabel.Size = new System.Drawing.Size(210, 13);
+            this.AuthorLabel.TabIndex = 19;
+            this.AuthorLabel.Text = "Автор: Александр Торбиевский (c) 2016";
             // 
             // VersionLabel
             // 
@@ -73,23 +73,23 @@
             this.MainPicDrawer.TabIndex = 16;
             this.MainPicDrawer.TabStop = false;
             // 
-            // button1
+            // CloseButton
             // 
-            this.button1.Location = new System.Drawing.Point(12, 82);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(278, 23);
-            this.button1.TabIndex = 20;
-            this.button1.Text = "Закрыть";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.CloseButton.Location = new System.Drawing.Point(12, 82);
+            this.CloseButton.Name = "CloseButton";
+            this.CloseButton.Size = new System.Drawing.Size(278, 23);
+            this.CloseButton.TabIndex = 20;
+            this.CloseButton.Text = "Закрыть";
+            this.CloseButton.UseVisualStyleBackColor = true;
+            this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
             // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(302, 117);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.CloseButton);
+            this.Controls.Add(this.AuthorLabel);
             this.Controls.Add(this.VersionLabel);
             this.Controls.Add(this.NameLabel);
             this.Controls.Add(this.MainPicDrawer);
@@ -107,10 +107,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label AuthorLabel;
         private System.Windows.Forms.Label VersionLabel;
         private System.Windows.Forms.Label NameLabel;
         private System.Windows.Forms.PictureBox MainPicDrawer;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button CloseButton;
     }
 }

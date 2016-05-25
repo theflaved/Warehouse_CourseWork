@@ -1,6 +1,6 @@
 ﻿namespace Warehouse
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,18 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MainDataView = new System.Windows.Forms.DataGridView();
             this.DGVContext = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SearchBox = new System.Windows.Forms.TextBox();
             this.MainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.FileToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.экспортToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.вФайлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.зарегистрироватьИзмененияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DeliverToOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
@@ -69,17 +69,17 @@
             // DGVContext
             // 
             this.DGVContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.удалитьToolStripMenuItem});
+            this.DeleteToolStripMenuItem});
             this.DGVContext.Name = "DGVContext";
-            this.DGVContext.Size = new System.Drawing.Size(143, 26);
+            this.DGVContext.Size = new System.Drawing.Size(153, 48);
             // 
-            // удалитьToolStripMenuItem
+            // DeleteToolStripMenuItem
             // 
-            this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
-            this.удалитьToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
-            this.удалитьToolStripMenuItem.Text = "Удалить";
-            this.удалитьToolStripMenuItem.Click += new System.EventHandler(this.DeleteButton_Click);
+            this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
+            this.DeleteToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.DeleteToolStripMenuItem.Text = "Удалить";
+            this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
             // SearchBox
             // 
@@ -95,8 +95,8 @@
             // 
             this.MainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileToolStrip,
-            this.экспортToolStripMenuItem,
-            this.зарегистрироватьИзмененияToolStripMenuItem,
+            this.ExportToolStripMenuItem,
+            this.DeliverToOutToolStripMenuItem,
             this.HelpToolStrip});
             this.MainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MainMenuStrip.Name = "MainMenuStrip";
@@ -129,30 +129,30 @@
             this.SaveAsToolStripMenuItem.Text = "Сохранить как";
             this.SaveAsToolStripMenuItem.Click += new System.EventHandler(this.WriteFileButton_Click);
             // 
-            // экспортToolStripMenuItem
+            // ExportToolStripMenuItem
             // 
-            this.экспортToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.вФайлToolStripMenuItem});
-            this.экспортToolStripMenuItem.Name = "экспортToolStripMenuItem";
-            this.экспортToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
-            this.экспортToolStripMenuItem.Text = "Экспорт";
+            this.ExportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToFileToolStripMenuItem});
+            this.ExportToolStripMenuItem.Name = "ExportToolStripMenuItem";
+            this.ExportToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
+            this.ExportToolStripMenuItem.Text = "Экспорт";
             // 
-            // вФайлToolStripMenuItem
+            // ToFileToolStripMenuItem
             // 
-            this.вФайлToolStripMenuItem.Name = "вФайлToolStripMenuItem";
-            this.вФайлToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.вФайлToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.вФайлToolStripMenuItem.Text = "В файл";
-            this.вФайлToolStripMenuItem.Click += new System.EventHandler(this.PrintDBToDocButton_Click);
+            this.ToFileToolStripMenuItem.Name = "ToFileToolStripMenuItem";
+            this.ToFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.ToFileToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.ToFileToolStripMenuItem.Text = "В файл";
+            this.ToFileToolStripMenuItem.Click += new System.EventHandler(this.PrintDBToDocButton_Click);
             // 
-            // зарегистрироватьИзмененияToolStripMenuItem
+            // DeliverToOutToolStripMenuItem
             // 
-            this.зарегистрироватьИзмененияToolStripMenuItem.Name = "зарегистрироватьИзмененияToolStripMenuItem";
-            this.зарегистрироватьИзмененияToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            this.DeliverToOutToolStripMenuItem.Name = "DeliverToOutToolStripMenuItem";
+            this.DeliverToOutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.X)));
-            this.зарегистрироватьИзмененияToolStripMenuItem.Size = new System.Drawing.Size(182, 20);
-            this.зарегистрироватьИзмененияToolStripMenuItem.Text = "Зарегистрировать изменения";
-            this.зарегистрироватьИзмененияToolStripMenuItem.Click += new System.EventHandler(this.DeliverToWarehouseButton_Click);
+            this.DeliverToOutToolStripMenuItem.Size = new System.Drawing.Size(182, 20);
+            this.DeliverToOutToolStripMenuItem.Text = "Зарегистрировать изменения";
+            this.DeliverToOutToolStripMenuItem.Click += new System.EventHandler(this.DeliverToWarehouseButton_Click);
             // 
             // HelpToolStrip
             // 
@@ -179,7 +179,7 @@
             this.label2.TabIndex = 17;
             this.label2.Text = "Поиск";
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -190,7 +190,7 @@
             this.Controls.Add(this.MainMenuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(800, 400);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Warehouse 0.8b";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.MainDataView)).EndInit();
@@ -215,11 +215,11 @@
         private System.Windows.Forms.ToolStripMenuItem HelpToolStrip;
         private System.Windows.Forms.ToolStripMenuItem AboutToolStripMenuItem;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ToolStripMenuItem экспортToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem вФайлToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem зарегистрироватьИзмененияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ExportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DeliverToOutToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip DGVContext;
-        private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DeleteToolStripMenuItem;
     }
 }
 

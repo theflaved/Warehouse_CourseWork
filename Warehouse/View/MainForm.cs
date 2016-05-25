@@ -10,7 +10,7 @@ using Warehouse.View;
 namespace Warehouse
 {
     //Главная форма приложения
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         //Внешняя форма для регистрации отгрузки/поступления товара
         private WarehouseEditForm EditForm;
@@ -25,7 +25,7 @@ namespace Warehouse
 
         private Warehouse _dataCollection;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
